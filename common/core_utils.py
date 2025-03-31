@@ -127,14 +127,14 @@ def convert(period, points_per_decade=5):
     
     Returns: numpy array of intervals in seconds
     """
-    print(('period (ms): '+ str(period)))
+    print('period (ms): '+ str(period))
     #convert period to log-microseconds
     
     end_point = log10(period) + 3
     
-    print(('[convert] period (log mus): '+ str(end_point)))
+    print('[convert] period (log mus): '+ str(end_point))
     
-    steps = end_point * points_per_decade
+    steps = int(end_point * points_per_decade)
 
     t_step = numpy.linspace (0, end_point, steps)
     log_t_step = 10 ** (t_step - 6) 

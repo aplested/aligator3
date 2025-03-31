@@ -3,26 +3,27 @@
 __author__="Andrew"
 __date__ ="$Aug 26, 2013 4:03:07 PM$"
 
-from . import relaxes as re
-from . import common.IO_utils as iou
+import relaxes as re
+from common import IO_utils as iou
 import time
 import sys
-from . import mechanisms
+import mechanisms
 import pprint
-from . import config
+import config
 import os
-from .common.simple_log import Logger
+from common.simple_log import Logger
 
 #140918 new generic version, gets parameters from config.py module
 #141219 added fixrec - but it disappeared?? This crashes at line 39.
 #170606 moved logger out
 #250329 Fixing MR bugs
+#250331 Python3 conversion
 
 def announce ():
     print("\
     ALiGaTOR : Analysis of Ligand Gating: Trains and Other Relaxations\n\
     v. 0.5\
-    Andrew Plested FMP-Berlin 2025 (work-in-progress version)\
+    Andrew Plested HU-Berlin 2025 (work-in-progress version)\
     ")
 
 def package(expt_list=["train", "rec", "relax", "cr"], mech_list=["3"], rate="alpha", power=[1], v_range = 1):
@@ -102,7 +103,7 @@ if __name__ == "__main__":
     
     #import parameters from config module
     #implement more concise unpacking?, with defaults to rescue missing values
-    print(("The current working directory is {0}".format(os.getcwd())))
+    print("The current working directory is {0}".format(os.getcwd()))
     # read pickled config module 
     # there is a default.txt configuration
     config_file = "default.txt"

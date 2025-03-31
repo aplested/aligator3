@@ -30,10 +30,10 @@
 from math import exp, log10
 import copy
 import numpy
-from .mechanisms import mechanism
+from mechanisms import mechanism
 #from qmat import Q_mat
-from .common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
-from . import common.rcj_lib as rcj
+from common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
+from common import rcj_lib as rcj
 
 __author__="Andrew"
 __date__ ="$Jun 12, 2010 9:10:37 AM$"
