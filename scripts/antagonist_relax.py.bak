@@ -157,7 +157,7 @@ def sim(Tarp, Antagonist):
         Q_AB, Pinf_AB = generate_Q (N_states, drug_dict, rates)
         # by state - would be more convenient and faster to do matrix algebra for real here
         equilibrium = 0             #reinitialize equilibrium level
-        for open_state in list(conductance_dict.keys()):
+        for open_state in conductance_dict.keys():
             equilibrium += Pinf_AB [open_state] * conductance_dict [open_state]
 
         #now relaxation to [A] without B, after preincubation in [B]
@@ -185,7 +185,7 @@ def sim(Tarp, Antagonist):
     #should split out printing and formatting to another function
 
 
-    print(("Open state peak response following incubation with TARP:{0} and B:{1}".format(Tarp, Antagonist)))
+    print ("Open state peak response following incubation with TARP:{0} and B:{1}".format(Tarp, Antagonist))
 
     header ='cb (Molar)'
     
@@ -194,7 +194,7 @@ def sim(Tarp, Antagonist):
         s = key
     header += '\n'
     
-    print(header)
+    print header
     
     #get time series from last relaxation
     for t in sorted(open_relax[s]):
@@ -241,12 +241,12 @@ def main():
             curves[tarp + ':' + antagonist] = inhib_curves
             pr_out.append(print_out)
 
-    print('Peak vs Equib-Inhibition responses')
+    print 'Peak vs Equib-Inhibition responses'
     header = '[Antag]'+'\t'
     for condition in sorted(curves):
             header += str(condition)+'\tPk; Eqbm\t'
             
-    print(header)
+    print header
     
     #use last version of returned peak dict to get concs.
     if inhib_curves != None:
@@ -256,7 +256,7 @@ def main():
             for condition in sorted(curves):
                 l += str(curves[condition][conc][0]) + '\t' + str(curves[condition][conc][1]) + '\t'
 
-            print(l)
+            print l
         
 if __name__ == "__main__":
     main()

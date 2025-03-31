@@ -3,13 +3,13 @@
 __author__="Andrew"
 __date__ ="$Aug 26, 2013 4:03:07 PM$"
 
-import relaxes_w as re
+from . import relaxes_w as re
 import IO_utils as iou
 import time
 import sys
-import mechanisms_UAA as mechanisms
+from . import mechanisms_UAA as mechanisms
 import pprint
-import config
+from . import config
 import os
 from simple_log import Logger
 
@@ -73,7 +73,7 @@ def package(expt_list=["train", "rec", "relax", "cr"], mech_list=["3"], rate="al
             param.rate_to_change = rate
             #for changing binding only
             param.MR_rate = [(2, 3), (3, 4)]
-            print ("\n\nExperiment name: " + param.sim_name)
+            print(("\n\nExperiment name: " + param.sim_name))
             
             experiment = expt_call_table[expt_type]
             e = experiment(mech, param)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     
     #import parameters from config module
     #implement more concise unpacking?, with defaults to rescue missing values
-    print ("The current working directory is {0}".format(os.getcwd()))
+    print(("The current working directory is {0}".format(os.getcwd())))
     # read pickled config module 
     # there is a default.txt configuration
     config_file = "default.txt"
@@ -159,10 +159,10 @@ if __name__ == "__main__":
     Log = Logger(timestr+'_log.txt')        #create logfile
     announce()                              #announce program version
     
-    if config_imported: print ("\nConfiguration file "+config_file_used+" imported by config.py")
-    print ('\nThis file is: '+timestr+'_log.txt')
+    if config_imported: print(("\nConfiguration file "+config_file_used+" imported by config.py"))
+    print(('\nThis file is: '+timestr+'_log.txt'))
     
-    print ("\nParameters and settings used\nwd: {0}\nmod: {1}\nm_l: {2}\ne_l: {3}\nrate: {4}\npower: {5}\nrange: {6}\n".format(working_directory, mod, mech_list, expt_list, rate, power, range))
+    print(("\nParameters and settings used\nwd: {0}\nmod: {1}\nm_l: {2}\ne_l: {3}\nrate: {4}\npower: {5}\nrange: {6}\n".format(working_directory, mod, mech_list, expt_list, rate, power, range)))
     
     if pair_expt:
         a = re.PairExpt()

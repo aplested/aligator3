@@ -119,8 +119,8 @@ class PairExpt:
         self.mshell2.param = self.p2
 
         if self.Verbose:
-            print(("\nMech "+ pairmech1 + ", rs1.rates_set: \n" + str(self.rs1.rates_set)))
-            print(("\nMech "+ pairmech2 + ", rs2.rates_set: \n" + str(self.rs2.rates_set)))
+            print ("\nMech "+ pairmech1 + ", rs1.rates_set: \n" + str(self.rs1.rates_set))
+            print ("\nMech "+ pairmech2 + ", rs2.rates_set: \n" + str(self.rs2.rates_set))
 
         for _ms1, _ms2 in zip(self.rs1.rates_set, self.rs2.rates_set):
 
@@ -140,7 +140,7 @@ class PairExpt:
         self.printout = "\nExperiment name: " + self.p1.sim_name + "\n" + \
                 _PMC.global_head + "\n" + _PMC.key_line + "\n" + self.printout
         
-        print((self.printout))
+        print (self.printout)
 
 class PairMechComparison: 
     """Compare pk/ss vs recovery for two individual mechanisms 

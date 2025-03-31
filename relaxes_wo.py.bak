@@ -8,32 +8,33 @@
 # TwoMechSetup        - 
 #
 # PairMechComparison  - build kinetic comparisons between two mechanisms
-# ConcResponse        - calculate concentration-response curve
+# ConcResponse        - MOVED TO CONCENTRATION calculate concentration-response curve
 # Relaxation          - calculate relaxation (open states...)
-# Recovery            - calculate recovery curve (desensitized/shut state relaxation?)
+# Recovery            - MOVED TO RECOVERY calculate recovery curve (desensitized/shut state relaxation?)
+# Recovery_Qmade      - MOVED TO RECOVERY 
 # Train               - calculate response to a train of pulses
-# ConcInhibition (ND) - calculate low concentration-inhibition relation 
+# ConcInhibition (ND) - MOVED TO CONCENTRATION calculate low concentration-inhibition relation 
 # PulseInhibition (ND)- prepulse inhibition (3 barrel) experiment
 # RcjTrain            - calculate train using realistic concentration jumps
 #
 # TrainExpt           - calculate family of trains to see effect of changing a rate
-# RecoveryExpt        - calculate family of recovery curves
-# CrExpt              - calculate family of concentration response curves
+# RecoveryExpt        - MOVED TO RECOVERY calculate family of recovery curves
+# CrExpt              - MOVED TO CONCENTRATION calculate family of concentration response curves
 # RelaxExpt           - calculate family of relaxations
-# JFExpt
+# JFExpt              - calculate families of relaxations to different single pulses subclassing TrainExpt 
 #
 #   August 2013: ConcResponse added
 #   October 2013: building pairwise comparisons (for two mechanisms)
 
 
-
+from __future__ import print_function
 from math import exp, log10
 import copy
 import numpy
-from .mechanisms import mechanism
+from mechanisms import mechanism
 #from qmat import Q_mat
-from .common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
-from . import common.rcj_lib as rcj
+from common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
+import common.rcj_lib as rcj
 
 __author__="Andrew"
 __date__ ="$Jun 12, 2010 9:10:37 AM$"
@@ -49,7 +50,7 @@ class Parameters(dict):
         if parameters == None: 
             self.set_defaults()  
         else:
-            for d in list(parameters.keys()):
+            for d in parameters.keys():
                 self[d] = parameters[d]
 
     def __getattr__(self, param):
@@ -72,18 +73,18 @@ class Parameters(dict):
                                     #with different powers
                                     
         #Pick MR_rates that are common, and check them against mechanism later
-        #self['MR_rate'       ] = [(1,7), (0,5), (7,8), (5,6)]
-        self['MR_rate'       ] = []     #add rates here that you want to use to set MR
-        self['MR_avoid'      ] = []     #this will be augmented according to any rates we want to vary externally
-        self['zero_conc'     ] = 0
+        self['MR_rate'       ] = [(1,7), (0,5), (7,8), (5,6)]
+        self['MR_avoid'      ] = []     #this will be augmented according to varying rates
+        self['zero_conc'     ] = 0 
         self['high_conc'     ] = 1e-2
         self['MR_avoid_preserve'] = False
+        self['open_state_matrix'] = None       #usually set within mechanism, but this is the external route
 
     def MR_rate_clean(self, mech_rates):
         """Remove rate tuples from 'MR_rate' that are not in the mechanism"""
         for rate_tuple in self['MR_rate']:
             
-            if rate_tuple not in list(mech_rates.keys()):
+            if rate_tuple not in mech_rates.keys():
                 self['MR_rate'].remove(rate_tuple)
                 print ("Removed " + str(rate_tuple) + " from MR_rate")
                 
@@ -200,16 +201,18 @@ class ExperimentSetup:
             #self.param.MR_rate_clean(self.rates) 
         else:
             self.param = param
-        
+        print ("SPOSM", self.param.open_state_matrix)
         print ("[ExperimentSetup] Cleaning MR parameters")
         self.param.MR_rate_clean(self.rates)
           
+        
         #make rate set
         self.rs = RateGenerator(self.rates, self.param)
-        self.rs.make()  #the ExperimentSetup object "rs", attribute "rates_set" now has the set of rates
+        self.rs.make()  #the ExperimentSetup object "rs", 
+        #attribute "rates_set" is now a list of [experiment number and rates] pairs
     
         #output specification
-        self.table = "Trial #\t"+ '\t'.join(n for n in self.param.rate_to_change) + '\n'
+        self.table = "Trial #\t"+ '\t'.join(n for n in self.param.rate_to_change) + "\tOpen States" +'\n'
         self.trace_set = []  
         self.header = False          #default no header for the trace output. Build in some subclasses
      
@@ -246,6 +249,7 @@ class ExperimentSetup:
   
   
 class TwoMechSetup:
+        #moved to compare.py
         """ base class for comparison experiments on a two mechanisms
         
         subclass of ExperimentSetup with new __init__ method"""
@@ -284,12 +288,13 @@ class TwoMechSetup:
             self.trace_set = [] #??
             
 class Pack_m:
+    #moved to compare.py
     def __init__(self, mechname="3"):
         
         self.rates, self.N_states, self.open_states = mechanism(mechname)
 
-
 class PairExpt:
+    #moved to compare.py
     """Run function for pairwise comparisons"""
     
     def __init__(self, pairmech1 = "3", pairmech2 = "4", 
@@ -392,6 +397,7 @@ class PairExpt:
 
 
 class PairMechComparison: 
+    #moved to compare.py
     """Compare pk/ss vs recovery for two individual mechanisms 
         Methods:
         __init__        : takes or generates mechanisms and parameters
@@ -529,6 +535,7 @@ class PairMechComparison:
     
         
 class ConcResponse:
+    #moved to concentration.py
     """Calculate peak and equilibrium responses over a range of concentrations
         Methods:
         __init__        : takes rates and P_init
@@ -711,7 +718,7 @@ class Relaxation:
         self.relax_sum = numpy.zeros([len(self.pts)])
         
         #Sum slices, each of which is P(s)(full t range), weighted by conductance
-        for s in list(self.states_sum.keys()):
+        for s in self.states_sum.keys():
             #self.states_sum[s] is the conductance of state s
             self.relax_sum += self.relax [:,s] * self.states_sum[s]
             #print self.relax_sum
@@ -732,14 +739,7 @@ class Relaxation:
         for pt in range(len(self.pts)):
             self.printout += str(self.pts[pt]) +"\t" +str(self.relax_sum[pt]) + "\n"
  
-class ConcInhibition:
-    """ //______|
-        //------|
-        //^^^^^^|"""
-        
-    def __init__(self):
-        pass
-        
+
 class PulseInhibition:
     """ 0_|
         0___|
@@ -828,6 +828,7 @@ class PulseInhibition:
 
         
 class Recovery:
+    #moved to recovery.py
     """
     Two pulse protocols
     simulate relaxations of response to second pulse following a long conditioning pulse
@@ -979,6 +980,7 @@ class Recovery:
             self.printout += "\n"
  
 class Recovery_Qmade(Recovery):
+    #moved to recovery.py
     """subclass to initialise recovery simply when Q mats are already made"""
     def __init__(self, param, N_states, open_states, Q_lo, Q_hi, P_init_hi, t_range=10000, normalise=False):
         
@@ -992,6 +994,7 @@ class Recovery_Qmade(Recovery):
         self.norm = normalise
         
 class Train:
+    #moved to trains.py
     """Trains of ideal square pulses"""
     
     def __init__(self, npulse, pwidth, pfreq, param, N_states, open_states, rates):
@@ -1099,6 +1102,7 @@ class Train:
         #convert train info into piecewise record
 
 class RCJ_Train:
+    #moved to trains.py
     """Trains of realistic concentration jumps"""
     
     def __init__(self, npulse, pwidth, pfreq, prise, param, N_states, open_states, rates, sample=8):
@@ -1289,6 +1293,7 @@ class RelaxExpt(ExperimentSetup):
         self.text_out()
 
 class JFExpt():
+    #moved to trains.py
     """
     Jump Family expt with multiple values of one rate in a mechanism
     wrapper for TrainExpt, using a single pulse and padding it at the back
@@ -1337,7 +1342,9 @@ class JFExpt():
         self.text_out()
     """
 
+
 class RecoveryExpt(ExperimentSetup):   
+    #moved to recovery.py
     """Recovery expt with multiple values of one rate in a mechanism"""
     
     def run(self, P_init='hi', t_range=100000, normalise=True):
@@ -1377,6 +1384,7 @@ class RecoveryExpt(ExperimentSetup):
 
     
 class TrainExpt(ExperimentSetup):
+    #moved to trains.py
     """Construct trains on a set of mechanisms with altered rates"""
 
     def run(self, n=50, pwidth=1, pfreq=200, mod=False):
@@ -1390,7 +1398,16 @@ class TrainExpt(ExperimentSetup):
         if not mod: mod = ""
         self.header = ""
         
+        #rates_set is a set of experiment number : rate set pairs
         for r in self.rs.rates_set:
+           #usually open_states_matrix is None
+           #if we are doing a conductance variation, retrieve the open states for ith iteration
+            if self.param.open_state_matrix != None:
+            
+                #can fail spectacularly -should wrap this
+                #self.param.open_states_matrix should be a ConductMat object
+                self.open_states = self.param.open_state_matrix.get_open_states(r[0])
+                
             _ra = r[1]
             t = Train(n, pwidth, pfreq, self.param, self.N_states, self.open_states, _ra)
             t.build()       #optional argument can cancel prepadding with 100 ms
@@ -1408,13 +1425,14 @@ class TrainExpt(ExperimentSetup):
             for _rtc in self.param.rate_to_change:
                 #print (str(_rtc))
                 _rate_changed = _ra[r_tuple_from_r_name(_ra, _rtc)][1][0]
-
-                self.table +=  str(_rate_changed) + '\t'            
-                print (str(_rtc) + '\t' + str(_rate_changed))
+                rtc_print = "{0}\t".format(_rate_changed)
+                self.table +=  rtc_print            
+                print (str(_rtc) + rtc_print)
             
-            self.table += '\n'
+            print (self.open_states)
+            self.table += "{0}\n".format(self.open_states)
             
-            #hack, put the last rate from rate_to_change each time
+            #hack, put the last rate from rate_to_change this string each time
             self.header += str(self.param.sim_name) + "_" + mod + "_{0:.2f}".format(_rate_changed) + "\t"
             #self.overall_printout += t.printout
             
@@ -1431,6 +1449,7 @@ class TrainExpt(ExperimentSetup):
     
 
 class CrExpt(ExperimentSetup):
+    #moved to concentration.py
     """construct concentration response relations (peak and ss)
     on a set of mechanisms with altered rate(s)  
     """

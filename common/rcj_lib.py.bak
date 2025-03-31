@@ -10,7 +10,7 @@ __date__ ="$Dec 20, 2010 12:07:36 PM$"
 import math
 from common.qmat import Q_mat
 from math import exp
-from . import threshold as thr
+import threshold as thr
 import numpy
 
 def erf(x):
@@ -187,8 +187,8 @@ def rcj_calc_nump (jux, mech_rates, paras, P=[]):
     
     t_point = numpy.arange(0, rl, ss)
     
-    print('ok', len(t_point), len (jux))
-    print(jux)
+    print'ok', len(t_point), len (jux)
+    print jux
     for idx in range (len(jux)):
 
         #extract concentration.
@@ -210,7 +210,7 @@ def rcj_calc_nump (jux, mech_rates, paras, P=[]):
                 Qc_w.apply_MR_on_Q()  
                 MR_saved = Qc_w.mst
             else:
-                print(len(Q_library))
+                print len(Q_library)
                 Qc_w.mst = MR_saved #maybe this is not needed? Belt and braces
                 
             Qc_w.add_agonist_dependence_to_Q({1:c})     #c must be passed as a dict
@@ -239,9 +239,9 @@ def rcj_calc_nump (jux, mech_rates, paras, P=[]):
                         r = r + ju * exp(k*dt)
                         
                     except:
-                        print(len(rlx), r, ju, k, Qc_w.w[:,s]) 
-                        print(Qc_w.eigenval) 
-                        print(Qc_w.Q)
+                        print len(rlx), r, ju, k, Qc_w.w[:,s] 
+                        print Qc_w.eigenval 
+                        print Qc_w.Q
                         break
                 P[s] = r                    #update P stepwise  
 
@@ -304,7 +304,7 @@ def compose_rcj_out (cjump,relax_dict,o_states,offset=1.2,output_Occup=False,out
 
     return lines
 
-def pulse_instexp(t, xxx_todo_changeme):
+def pulse_instexp(t, (prepulse, cmax, tdec, cb)):
     """
     From Remis Lape 2011
     t is the time array
@@ -313,9 +313,9 @@ def pulse_instexp(t, xxx_todo_changeme):
     tdec    -- decay time
     cb- background concentration in molar
     """
-    (prepulse, cmax, tdec, cb) = xxx_todo_changeme
+
     if type(t) == type(numpy.array(())):
-        print('array')
+        print 'array'
         t1 = numpy.extract(t[:] < prepulse, t)
         t2 = numpy.extract(t[:] >= prepulse, t)
         conc2 = cmax * numpy.exp(- (t2 - prepulse) / tdec)
@@ -345,10 +345,10 @@ def crossing_time_measure (trace, low=0.1, high=0.9, verbose=True):
     aa, bb, cc, dd, ee, ff = thr.fall_threshold (trace,low,high)
 
     if verbose:
-        print("%i-%i%% rise time = %f time units" %(int(low*100),int(high*100),f-e))
-        print("%i-%i%% fall time = %f time units" %(int(low*100),int(high*100),ee-ff))
-        print(a,trace[b],c,trace[d])
-        print(aa,trace[bb],cc,trace[dd])
+        print "%i-%i%% rise time = %f time units" %(int(low*100),int(high*100),f-e)
+        print "%i-%i%% fall time = %f time units" %(int(low*100),int(high*100),ee-ff)
+        print a,trace[b],c,trace[d]
+        print aa,trace[bb],cc,trace[dd]
 
     return f-e, ee-ff
 

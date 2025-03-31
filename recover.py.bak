@@ -1,6 +1,6 @@
 #recovery classes from original relaxes.py
-from .relaxes import ExperimentSetup, Relaxation
-from .common.core_utils import convert_ms, generate_Q, convert, r_tuple_from_r_name 
+from relaxes import ExperimentSetup, Relaxation
+from common.core_utils import convert_ms, generate_Q, convert, r_tuple_from_r_name 
 import numpy
 
 class Recovery:
@@ -21,11 +21,11 @@ class Recovery:
         
         #lo_rates = copy.deepcopy(rates)
         #hi_rates = copy.deepcopy(rates)
-        print(("make Qlo, conc: "+str(param.zero_conc) ))
+        print("make Qlo, conc: "+str(param.zero_conc) )
         self.Qlo, self.P_init_lo = generate_Q(N_states, {1: param.zero_conc}, 
                                             rates, param.MR_rate, param.MR_avoid)
         
-        print(("make Qhi, conc: "+str(param.high_conc) ))
+        print("make Qhi, conc: "+str(param.high_conc) )
         self.Qhi, self.P_init_hi = generate_Q(N_states, {1: param.high_conc}, 
                                             rates, param.MR_rate, param.MR_avoid)
         
@@ -77,7 +77,7 @@ class Recovery:
         if self.norm:
             self.rec_curve[:, 1] = self.rec_curve[:, 1] / self.rec_curve [-1, 1]
         
-        print((self.rec_curve))
+        print (self.rec_curve)
  
     def get_keff(self, take_final=False):
         """ Optionally called after generating the recovery curve with build_curve
@@ -179,7 +179,7 @@ class RecoveryExpt(ExperimentSetup):
             t_range : maximum interval to check recovery
             normalise : Normalise the recovery curves to their final value"""
             
-        print(("Recovery Experiment with {0} ms time range.".format(t_range)))
+        print ("Recovery Experiment with {0} ms time range.".format(t_range))
         self.curve_set = []
 
         for r in self.rs.rates_set:
@@ -197,11 +197,11 @@ class RecoveryExpt(ExperimentSetup):
             self.trace_set.append(sp_t)             #p2 responses go to trace_set
 
             for _rtc in self.param.rate_to_change:
-                print((str(_rtc)))
+                print (str(_rtc))
                 _rate_changed = _ra[r_tuple_from_r_name(_ra, _rtc)][1][0] 
 
                 self.table += str(r[0]) + '\t' + str(_rate_changed) + '\t' + str(rec.k_eff) + '\n' 
-                print((rec.printout))
+                print (rec.printout)
                 #self.overall_printout += rec.printout 
 
         self.curve_save(self.curve_set, mod='_curves')

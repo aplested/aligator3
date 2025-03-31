@@ -13,15 +13,15 @@ def mechanism(mech="1"):
     if mech not in built_ins:
         # Presume that user wants to use a mechanism defined elsewhere
         # Try to import the mechanism from the local directory
-        print("mechanism requested: ", mech)
+        print "mechanism requested: ", mech
         try:
             i_mech = __import__(mech)
             if 'mech_definition' in dir(i_mech):
                 rd, N_states, open_states = i_mech.mech_definition()
                 print ("Valid mechanism method found")
-                print(rd)
+                print rd
             else:
-                print((mech+" is not a valid mechanism module - needs a method: mech_definition"))
+                print (mech+" is not a valid mechanism module - needs a method: mech_definition")
                 print ("Reverting to built-in default (mech. #1)")
                 mech = "1"
         except:

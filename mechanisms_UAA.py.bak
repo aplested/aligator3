@@ -14,15 +14,15 @@ def mechanism(mech="4"):
     
     
     if mech not in built_ins:
-        print("mechanism requested: ", mech)
+        print "mechanism requested: ", mech
         try:
             i_mech = __import__(mech)
             if 'mech_definition' in dir(i_mech):
                 rd, N_states, open_states = i_mech.mech_definition()
                 print ("Valid mechanism method found")
-                print(rd)
+                print rd
             else:
-                print((mech+" is not a valid mechanism module - needs a method: mech_definition"))
+                print (mech+" is not a valid mechanism module - needs a method: mech_definition")
                 print ("Reverting to built-in default (mech. #4)")
                 mech = "4"
         except:

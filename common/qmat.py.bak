@@ -1,5 +1,5 @@
 import numpy as np
-from . import MinimumSpanningTree as span
+import MinimumSpanningTree as span
 from numpy import linalg as LA
 from numpy.linalg import inv
 import copy
@@ -73,7 +73,7 @@ class Q_mat:
             params: dictionary with MR info
         """
 
-        print(params) #FINE AS DICT
+        print params #FINE AS DICT
         ###ONLY HAVE TO DO MR once for each jump
         if params['MR_option'] != 'HardCoded':
             
@@ -86,7 +86,7 @@ class Q_mat:
             if params['MR_option'] == 'Automatic':
                 #This should be reproducible and quite fast.
                 print ('\n-------------\nAutomatic MR\n--------------')
-                print(('Parameters ( [use] [avoid] ): ' + str(params['MR_use']) + str(params['MR_avoid'])+'\n'))
+                print ('Parameters ( [use] [avoid] ): ' + str(params['MR_use']) + str(params['MR_avoid'])+'\n')
                 self.mst.setup_MR(params['MR_avoid'], params['MR_use'])
                 #print self.mst.MR_paths good for debugging perhaps but otherwise overkill
             
@@ -109,7 +109,7 @@ class Q_mat:
         
         for MR_rate in self.mst.MR_paths:
             ## for each MR, need to setup numerator prod, denom product
-            print("\nImposing MR on rate", MR_rate)
+            print "\nImposing MR on rate", MR_rate
             eachpath = self.mst.MR_paths[MR_rate]
            
            
@@ -155,17 +155,17 @@ class Q_mat:
             den_r.reverse()       #for ease of reading (not if you forget to also reverse the other list too)
             den_rates.reverse()   #THIS LINE WAS OMITTED - CRAZY MAKING
             
-            print('numerator rates: ', list(zip(num_r, num_rates)))
-            print('denominator rates:', list(zip(den_r, den_rates)))
+            print 'numerator rates: ', zip(num_r, num_rates)
+            print 'denominator rates:', zip(den_r, den_rates)
             new_rate = float (num) / den
-            print('Rate was: ', self.rates[MR_rate_tuple], '. Now setting to: ', new_rate)
+            print 'Rate was: ', self.rates[MR_rate_tuple], '. Now setting to: ', new_rate
             self.rates[MR_rate_tuple][1][0] = new_rate
             
-            print('Updated rate dictionary: ', MR_rate_tuple, self.rates[MR_rate_tuple])
+            print 'Updated rate dictionary: ', MR_rate_tuple, self.rates[MR_rate_tuple]
             self.rebuild_Q()
-            print(("Q matrix updated, element " + str(MR_rate_tuple) + " set to: " + str(self.Q[MR_rate_tuple])))
+            print ("Q matrix updated, element " + str(MR_rate_tuple) + " set to: " + str(self.Q[MR_rate_tuple]))
         self.MR_done = True
-        print("MR Done\n")
+        print "MR Done\n"
     
     def add_agonist_dependence_to_Q(self, drugs):
         #cycle thru all keys to find concentration dependent rates
@@ -176,13 +176,13 @@ class Q_mat:
                 self.Q [transition] = self.Q [transition] * drugs[self.rates[transition][1][1]]
                 #print self.Q [transition]
         # make diagonal correct - replace with method?
-        for Row_sum, index in zip(self.Q.sum(1),list(range(self.N_states))):
+        for Row_sum, index in zip(self.Q.sum(1),range(self.N_states)):
             self.Q [index, index] = -Row_sum
         
         #print self.Q
 
     def do_diag(self):
-        for Row_sum, index in zip(self.Q.sum(1),list(range(self.N_states))):
+        for Row_sum, index in zip(self.Q.sum(1),range(self.N_states)):
             self.Q [index, index] = -Row_sum
 
 

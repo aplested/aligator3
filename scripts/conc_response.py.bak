@@ -55,7 +55,7 @@ def occup_with_rate(N_s,rate_dict,rate_to_vary):
     x = rate_dict[rate_to_vary]
     rates = [x[1][0] * 10**(float(i)/4-3) for i in range(19)]
 
-    print(rates)
+    print rates
     for rate in rates:
 
         Q = Q_mat(N_s)
@@ -67,7 +67,7 @@ def occup_with_rate(N_s,rate_dict,rate_to_vary):
         #print Q.show()
         #make diagonal correct
         Q.do_diag()
-        print(Q.show())
+        print Q.show()
         #Q.add_agonist_dependence_to_Q(rate_dict, drugs)
 
         Q.p_infinity()
@@ -164,7 +164,7 @@ def main():
 
     f=open('output.xls', 'w')
     for each_line in results:
-            print(each_line)
+            print each_line
             f.write(each_line)
 
     f.close()

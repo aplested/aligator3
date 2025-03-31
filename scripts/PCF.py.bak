@@ -87,7 +87,7 @@ if __name__ == "__main__":
         F.construct_train()
         traces.append(F.trace)
     
-    print(traces)
+    print traces
     curve_save(traces, timestr+"I&F") 
    
 

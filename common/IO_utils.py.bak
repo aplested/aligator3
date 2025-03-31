@@ -2,7 +2,7 @@
 
 import os
 import shutil
-from . import Q_input
+import Q_input
 import numpy as np
 
 def curve_save(curve_data, mod="", head=""):
@@ -23,7 +23,7 @@ def prt_to_rates(filename, output_dir):
                 -- dcmech           : name of the new rate file
                 -- open_state_count : the number of open states
     '''
-    print(('Using ' + str(filename)))
+    print ('Using ' + str(filename))
     if filename[-9:] == "rates.txt":
         previously_converted = True
     else:
@@ -54,7 +54,7 @@ def prt_to_rates(filename, output_dir):
     base_fname = os.path.basename(filename)
     dc_mech = base_fname[:-4] + '_rates.txt'
 
-    print('writing rates to: ', dc_mech)
+    print 'writing rates to: ', dc_mech
 
     cwd = os.getcwd()
     os.chdir(output_dir)
@@ -78,7 +78,7 @@ def read_rate_file (filename):
     returns -- list of strings of input and what was read as a string
     """
 
-    print('Opening %s as rate file input...'%(filename))
+    print 'Opening %s as rate file input...'%(filename)
     f = open(filename, 'r')
 
     mech_text = f.readlines() # A list of strings
@@ -139,14 +139,14 @@ def ask_ok(prompt, retries=2, default=True, complaint='Yes or no, please!'):
             promptdefault = 'Y'
         else:
             promptdefault = 'N'
-        ok = input(prompt + '[' + promptdefault + '] ?')
+        ok = raw_input(prompt + '[' + promptdefault + '] ?')
         if ok in (''): return default
         if ok in ('','y', 'ye', 'yes'): return True
         if ok in ('n', 'no', 'nn', 'nope'): return False
         retries = retries - 1
-        print(complaint)
+        print complaint
         if retries < 0:
-            raise IOError('refusenik user')
+            raise IOError, 'refusenik user'
 
 def getpath(fixed=True, work_dir='/Users/Andrew'):
     '''
@@ -166,15 +166,15 @@ def getpath(fixed=True, work_dir='/Users/Andrew'):
     if fixed:
         return FilesInDirectory,work_dir
 
-    print("\nCurrent directory is ",work_dir)
-    print(screen_out)
+    print "\nCurrent directory is ",work_dir
+    print screen_out
 
     if ask_ok('Use this path '):
         return FilesInDirectory,work_dir
 
     while True:
         
-        work_dir = input('Please type a relative or absolute path to find input files:')
+        work_dir = raw_input('Please type a relative or absolute path to find input files:')
         
         if os.path.exists(work_dir):
 
@@ -182,15 +182,15 @@ def getpath(fixed=True, work_dir='/Users/Andrew'):
             work_dir = os.getcwd()
 
             screen_out,FilesInDirectory = get_file_list(work_dir)
-            print(screen_out)
+            print screen_out
 
             if ask_ok('Use this path '):
                 return FilesInDirectory,work_dir
             
         else:
-            print('No such path, use format /Andrew/mydata/iscrap')
+            print 'No such path, use format /Andrew/mydata/iscrap'
 
-        print("Current directory is ",os.getcwd())
+        print "Current directory is ",os.getcwd()
 
 def make_folder(new_dir, target):
     '''
@@ -209,7 +209,7 @@ def make_folder(new_dir, target):
             directory_established = True
             
         else:
-            print("can't overwrite, so stopping")
+            print"can't overwrite, so stopping"
             
     else:
         os.chdir(target)
@@ -277,7 +277,7 @@ def rcj_merge(files_to_merge,other_cols,one_time_col=True):
                 file_dict[jump_file] = f
 
     #take the name of the first file
-    root_name = list(file_dict.keys())[0]
+    root_name = file_dict.keys()[0]
 
     split_name = root_name.split('_')
 
@@ -285,7 +285,7 @@ def rcj_merge(files_to_merge,other_cols,one_time_col=True):
 
     header =[]
     g = open(output_filename,'w')
-    print("Writing merged output to %s ..." %(output_filename))
+    print "Writing merged output to %s ..." %(output_filename)
     
     for key in sorted(file_dict):
         stem = key.split(' ')
@@ -359,7 +359,7 @@ def rcj_merge(files_to_merge,other_cols,one_time_col=True):
         #print 'Closing',eachfile
         eachfile.close()
 
-    print('done.')
+    print 'done.'
 
 def read_trace(data_file):
     '''

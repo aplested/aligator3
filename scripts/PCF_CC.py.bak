@@ -53,7 +53,7 @@ def baseline_normalise(trace):
     
     nbt /= nbt.max()
     
-    if nbt.max() != 1: print(nbt.max())
+    if nbt.max() != 1: print nbt.max()
     return nbt
 
 def states_dict_2_vector(N, s):

@@ -14,11 +14,11 @@ def recovery_test():
     rec = relaxes.Recovery(param, N_states, open_states, rates, P_init='hi', t_range=3000)
  
     rec.build_curve()
-    print(rec.second_pulses.shape)
+    print rec.second_pulses.shape
     sp_t = rec.second_pulses.transpose()
     
-    print(rec.second_pulses.shape)
-    print(sp_t.shape)
+    print rec.second_pulses.shape
+    print sp_t.shape
     numpy.savetxt(sim_name+"_traces.txt", sp_t, delimiter='\t') 
     numpy.savetxt(sim_name+"_curve.txt", rec.rec_curve, delimiter='\t') 
  
@@ -52,7 +52,7 @@ def train_response():
     t = relaxes.Train(n, pwidth, pfreq, param, N_states, open_states, rates)
     t.build()
     t.construct_train()
-    print(t.printout)
+    print t.printout
 
 
 
@@ -75,7 +75,7 @@ def relax_test():
     
     f=open(param.sim_name + '.xls', 'w')
     for each_line in r.printout.split("\n"):
-        print(each_line)
+        print each_line
         f.write(each_line + "\n")
 
     f.close()
@@ -96,12 +96,12 @@ def pdict_test():
     
     }
 
-    print(list(experimental_parameters.keys()))
+    print experimental_parameters.keys()
 
     re = relaxes.Parameters(experimental_parameters)
     
-    print(list(re.keys()))
-    print("sim_name:", re.sim_name)
+    print re.keys()
+    print "sim_name:", re.sim_name
     
     
     

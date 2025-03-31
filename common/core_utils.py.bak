@@ -3,7 +3,7 @@ __date__ ="$Aug 26, 2013 11:34:04 AM$"
 
 #module of core utility functions
 
-from .qmat import Q_mat
+from qmat import Q_mat
 from math import exp, log10
 import numpy
 import copy
@@ -59,7 +59,7 @@ def calc_kweight (Qw_slice,Q_eigenvals):
     denom = 0
     sum = 0
     for e,f in zip(Qw_slice,Q_eigenvals):
-        if f != 0:
+        if f <> 0:
             sum = sum + e*f
             denom = denom + e
 
@@ -107,14 +107,14 @@ def relax_calc (Q_w_slice, eigenvals_Q):
     return relax, p_out
 
 def r_tuple_from_r_name(r_dict, r_name, Verbose=False):
-    if Verbose: print(("r_tuple from r_name: " + str(r_name) + "\n"))
-    for k, v in list(r_dict.items()):
-        if Verbose: print(v[0],k)
+    if Verbose: print ("r_tuple from r_name: " + str(r_name) + "\n")
+    for k, v in r_dict.items():
+        if Verbose: print v[0],k
         if r_name == v[0]:    
             return k  
         
     #if made through the loop, we have failed to find key
-    print("failed to find key, check rate name")
+    print "failed to find key, check rate name"
     return None
 
 def convert(period, points_per_decade=5):    
@@ -127,12 +127,12 @@ def convert(period, points_per_decade=5):
     
     Returns: numpy array of intervals in seconds
     """
-    print(('period (ms): '+ str(period)))
+    print ('period (ms): '+ str(period))
     #convert period to log-microseconds
     
     end_point = log10(period) + 3
     
-    print(('[convert] period (log mus): '+ str(end_point)))
+    print ('[convert] period (log mus): '+ str(end_point))
     
     steps = end_point * points_per_decade
 
@@ -154,7 +154,7 @@ def convert_ms(period, points_per_decade=5):
     
     #convert to log-seconds
     end_point = log10(period) - 3
-    print(('[convert_ms] period (log ms): '+ str(end_point)))
+    print ('[convert_ms] period (log ms): '+ str(end_point))
     steps = (end_point + 4 ) * points_per_decade
 
     t_step = numpy.linspace (-4, end_point, steps) # 1e-4 seconds = 100 mus

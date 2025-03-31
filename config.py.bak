@@ -1,6 +1,6 @@
 __author__="Andrew"
 __date__ ="$18-Sep-2014 09:35:33$"
-import pickle as pickle
+import cPickle as pickle
 import time
 
 ## Here we have the default configuration parameters for input to the aligator script
@@ -45,7 +45,7 @@ class ConfigIO:
     def clear_config(self, Verbose=False):
         
         message = None
-        attributes = list(self.__dict__.keys())
+        attributes = self.__dict__.keys()
         for k in attributes:
             delattr (self, k)
         
@@ -60,7 +60,7 @@ class ConfigIO:
             if Verbose: message = "Config is empty, not saving (use keyword Override=True to save, and include a 'filename=Str' argument)"
             return message
         
-        elif len (self.__dict__) == 0 and not isinstance(filename, str):
+        elif len (self.__dict__) == 0 and not isinstance(filename, basestring):
             if Verbose: message =  "Config is empty, can't save anything without a 'filename=Str' argument"
             return message
         
@@ -70,7 +70,7 @@ class ConfigIO:
 
             # if a meaningful new filename was supplied, update the configuration file to reflect that.
             # skipped by default
-            if isinstance(filename, str): 
+            if isinstance(filename, basestring): 
                 self.config_filename = filename 
                 message = "Updated ConfigIO object filename to {0} \n".format(self.config_filename)
             
@@ -87,7 +87,7 @@ class ConfigIO:
     def read_config(self, filename, Verbose=False):
         message = None
         
-        if not isinstance(filename, str):
+        if not isinstance(filename, basestring):
             return "Error: filename supplied is not a string. Nothing done."
         
         with open(filename,'rb') as fp:

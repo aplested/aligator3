@@ -7,8 +7,8 @@ import rcj_Processor as r
 
 if __name__ == "__main__":
 
-    print("RCJ - Calculation of relaxations in response to Realistic Concentration Jumps")
-    print("Version 0.1")
+    print "RCJ - Calculation of relaxations in response to Realistic Concentration Jumps"
+    print "Version 0.1"
 
     ### set input directory and so on
 
@@ -42,10 +42,10 @@ if __name__ == "__main__":
     }
 
     for key in jump_parameters:
-        print(key, jump_parameters[key])
+        print key, jump_parameters[key]
 
     for key in output_format:
-        print(key, output_format[key])
+        print key, output_format[key]
 
     if input_settings['single_files']:
 

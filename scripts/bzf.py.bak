@@ -72,11 +72,11 @@ if __name__ == "__main__":
     }
     n_trace = len(open_set)
     
-    trials = list(range(n_trace))
+    trials = range (n_trace)
     #gammas = range (0, 30, 5)
     #print (trials, gammas)
     points = 100
-    episodes = list(range(points))
+    episodes = range(points)
     traces = numpy.zeros((points, n_trace + 1))
     
     traces [:,-1] = episodes
@@ -90,14 +90,14 @@ if __name__ == "__main__":
     Q.do_diag()             #otherwise you will get singular matrix complaint
     rel = Relaxation(Q, p_init, True)
     
-    for o_key,trial in zip(list(open_set.keys()), trials):
+    for o_key,trial in zip(open_set.keys(), trials):
         
         open_states = open_set[o_key]
         rel.assemble(episodes, open_states)
         traces [:,trial] = rel.relax_sum
         header += o_key +"\t"
         
-    print(header, traces)
+    print header, traces
     numpy.savetxt("//users/andrew/bzf-homo2.txt", traces, delimiter='\t') 
     
 
@@ -110,11 +110,11 @@ if __name__ == "__main__":
     }
     n_trace = len(open_set)
     
-    trials = list(range(n_trace))
+    trials = range (n_trace)
     #gammas = range (0, 30, 5)
     #print (trials, gammas)
     points = 100
-    episodes = list(range(points))
+    episodes = range(points)
     traces = numpy.zeros((points, n_trace + 1))
     
     traces [:,-1] = episodes
@@ -128,13 +128,13 @@ if __name__ == "__main__":
     Q.do_diag()             #otherwise you will get singular matrix complaint
     rel = Relaxation(Q, p_init, True)
     
-    for o_key,trial in zip(list(open_set.keys()), trials):
+    for o_key,trial in zip(open_set.keys(), trials):
         
         open_states = open_set[o_key]
         rel.assemble(episodes, open_states)
         traces [:,trial] = rel.relax_sum
         header += o_key +"\t"
         
-    print(header, traces)
+    print header, traces
     numpy.savetxt("//users/andrew/bzf-Het2.txt", traces, delimiter='\t') 
     

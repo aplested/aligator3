@@ -69,14 +69,14 @@ def interpret_line(mech_line, commands, prog='Unknown'):
                                         #not sure why this is here, obviously for older prt styles
         
         split_line = l[0]
-        print(split_line,'hi;')
+        print split_line,'hi;'
         sll = split_line.find('(')
         slr = split_line.find(')') + 1
         #if verbose: print sl, sll, slr
         try:
             from_to = eval(split_line[sll:slr])  #grab from_to info as tuple
         except:
-            print(mech_line, split_line[sll:slr], 'dcfile input fail - modify script or file')
+            print mech_line, split_line[sll:slr], 'dcfile input fail - modify script or file'
             return  '*rm', None, None
             # return a null-remove command to act as pass
 
@@ -103,7 +103,7 @@ def interpret_line(mech_line, commands, prog='Unknown'):
         try:
             from_to = eval(mech_line[7:14])
         except:
-            print(mech_line, mech_line[7:14], 'dcfile input fail - modify script or file')
+            print mech_line, mech_line[7:14], 'dcfile input fail - modify script or file'
             return None,'*rm'
             # return a null-remove command to act as pass
 
@@ -116,7 +116,7 @@ def interpret_line(mech_line, commands, prog='Unknown'):
         mux_conc = 0
 
         #Assume that association rates contain a '+' sign (and other rates don't) -- RISKY!!
-        if rate_name.find('+') != -1:
+        if rate_name.find('+') <> -1:
             mux_conc = 1
             
         #subtract 1 because states are zero biased in qmat.py
@@ -145,40 +145,40 @@ def modify_by_hand(rate_dictionary):
     for c in commands:
         instructions += c + ' : ' + commands[c]+'\n'
 
-    print(instructions)
+    print instructions
     #input loop
     while 1:
 
-        mech_input = input('?: ')
+        mech_input = raw_input('?: ')
 
         if mech_input == '*ls':
 
             report('',rate_dictionary)
-            print(instructions)
+            print instructions
 
         elif mech_input != '' and mech_input != '*ls':
 
             a, b, c = interpret_line(mech_input)
 
             if b != '*rm':
-                if a in rate_dictionary:
-                    print("changing rate: %s to %s" %(a,b))
+                if rate_dictionary.has_key(a):
+                    print "changing rate: %s to %s" %(a,b)
                     rate_dictionary[a] = b
 
-                elif (a in rate_dictionary) == False:
-                    print("adding rate: %s " %a,b)
+                elif rate_dictionary.has_key(a) == False:
+                    print "adding rate: %s " %a,b
                     rate_dictionary[a] = b
 
             elif b == '*rm':
-                if a in rate_dictionary:
-                    print("removing rate [%s] ..." %a)
+                if rate_dictionary.has_key(a):
+                    print "removing rate [%s] ..." %a
                     del rate_dictionary[a]
             
-                elif (a in rate_dictionary) == False and a != None:
-                    print('rate [%s] not in list, ignoring request to remove it' %a)
+                elif rate_dictionary.has_key(a) == False and a != None:
+                    print 'rate [%s] not in list, ignoring request to remove it' %a
 
                 else:
-                    print('Error: no rate given, please use *rm [Rate Name], where [Rate Name] is a valid name in the mechanism')
+                    print 'Error: no rate given, please use *rm [Rate Name], where [Rate Name] is a valid name in the mechanism'
 
         else:
             return rate_dictionary
@@ -266,10 +266,10 @@ def chop_HJC_prt (prt, prog='Win_HJCFIT'):
         a = prt.index(open_text)
         b = len(open_text)
         number_open_states = int(prt[a+b+2:a+b+6])
-        print(open_text,':', number_open_states)
+        print open_text,':', number_open_states
 
     else:
-        number_open_states = int(input("Didn't find the number of open states, how many?"))
+        number_open_states = int(raw_input("Didn't find the number of open states, how many?"))
 
     #loop until all examples are gone
     while prt.find(top) != -1:
@@ -303,11 +303,11 @@ def report (original_input, rates_in_dict_format):
 
     #print original_input
 
-    print('Rate Dict:\n----------\n')
+    print 'Rate Dict:\n----------\n'
     for key in rates_in_dict_format:
-        print(key,':', rates_in_dict_format[key])
-    print("Number of rates : ", len(rates_in_dict_format))
-    print("Number of states : ", number_of_states(rates_in_dict_format))
+        print key,':', rates_in_dict_format[key]
+    print "Number of rates : ", len(rates_in_dict_format)
+    print "Number of states : ", number_of_states(rates_in_dict_format)
     
     #print '\ndone'
 
@@ -323,7 +323,7 @@ def number_of_states(rate_dictionary):
         sn = key[0]
         #race to the top
 
-        if (sn in N_S) == False:  
+        if N_S.has_key(sn) == False:  
         # Not strictly necessary, values of N_S dict would be overwritten
             N_S [sn] = None
 

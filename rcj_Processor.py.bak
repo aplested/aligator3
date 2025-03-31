@@ -47,7 +47,7 @@ def run_rcj(prt_file, input_opts, output_opts, jump_parameters, Root_dir):
                 success             -   flag in case simulation failed
     '''
 
-    print('Running RCJ on %s' %prt_file)
+    print 'Running RCJ on %s' %prt_file
 
     sim_dir_name = prt_file[:-4]+'_sim'      # -4 to remove .txt suffix
     rcj_IO.make_folder(sim_dir_name,Root_dir)
@@ -93,19 +93,19 @@ def multi_rcj_setup(Parameters, MR_option, op_fo, input_filename = 'ke08ceko2b.t
 
     '''
     if verbose:
-        print('Taking rates from:',input_filename)
+        print 'Taking rates from:',input_filename
 
     saved =[]
     #convert HJCFIT prt to text ratefile, and grab the number of open states
     rates_filename, N_open, src_prog = rcj_IO.prt_to_rates(input_filename,output_directory)   
     
     if verbose:
-        print('Detected that ',input_filename, ' is a ',src_prog,' printout file')
+        print 'Detected that ',input_filename, ' is a ',src_prog,' printout file'
     
     open_states = []            #make a list of the numbered open states (assume they begin at 0, as per convention
     for o in range (N_open):
         open_states.append(o)
-    if verbose: print('Open state list', open_states)
+    if verbose: print 'Open state list', open_states
     
     prt_file_lines, read_from_file   = rcj_IO.read_rate_file (rates_filename)
 
@@ -125,7 +125,7 @@ def multi_rcj_setup(Parameters, MR_option, op_fo, input_filename = 'ke08ceko2b.t
     for pwidth in Parameters['pulse_width']:
         for rise in Parameters['rise_time']:
 
-            if verbose: print('Calculating %s microsec jump with %s microsec rise for %s...' %(pwidth,rise,input_filename))
+            if verbose: print 'Calculating %s microsec jump with %s microsec rise for %s...' %(pwidth,rise,input_filename)
 
             P_copy = Parameters.copy()
             P_copy['rise_time'] = rise      #send parameters dict with single rise time
@@ -147,7 +147,7 @@ def multi_rcj_setup(Parameters, MR_option, op_fo, input_filename = 'ke08ceko2b.t
             rcj_IO.simple_save (jump_data_out,full_save_path)
             saved.append(save_filename)
                       
-    if verbose: print('Calculations for %s done.'%(input_filename))
+    if verbose: print 'Calculations for %s done.'%(input_filename)
 
     return saved
 
@@ -193,44 +193,44 @@ def rcj_batch (ip_set, jump_paras, op_set):
 
             if op_set['get_rise_fall']:
                 os.chdir(output_directory)
-                print("Getting rise and fall times")
+                print "Getting rise and fall times"
                 s = jump_paras['step_size']
                 for trace_file in saved_files:
                     rise_in_samp,fall_in_samp = get_rise_fall (trace_file)
                     rf_times_by_file[trace_file] = [rise_in_samp*s,fall_in_samp*s]
 
             if op_set['merge_parallel']:
-                print('merging output...\n')
+                print 'merging output...\n'
                 os.chdir(output_directory)
                 column_prefices = ['jump','popen']
                 rcj_IO.rcj_merge(saved_files,column_prefices)
 
         elif os.path.isdir(prt_file):          #ignore directories!
-            print('Ignoring direcory: %s' %prt_file)
+            print 'Ignoring direcory: %s' %prt_file
 
         elif prt_file[0] == "." and not sys_ignored: #UNIX hidden file
             sys_ignored = True
-            print('Ignoring all hidden files')
+            print 'Ignoring all hidden files'
 
         elif prt_file[0] == "." and sys_ignored: pass
 
-        else : print('Ignoring %s' %prt_file)        #ignore all other files
+        else : print 'Ignoring %s' %prt_file        #ignore all other files
 
-    print('Summary:')
+    print 'Summary:'
 
     if len(simulated) == 0:
-        print("Nothing done")
+        print "Nothing done"
     else:
-        for k in list(simulated.keys()):
-            print(' %s sent to RCJ,' % (k))
+        for k in simulated.keys():
+            print ' %s sent to RCJ,' % (k)
             if not op_set['merge_parallel']:
-                print('merging output...\n')
+                print 'merging output...\n'
                 os.chdir(simulated[k])              #values are paths to individual simulation directories
                 column_titles = ['jump','popen']
                 rcj_IO.rcj_merge(os.listdir(simulated[k]),column_titles)
 
             else:
-                print('output merged during run\n')
+                print 'output merged during run\n'
 
 
         #send table with header to file

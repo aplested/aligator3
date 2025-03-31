@@ -1,6 +1,6 @@
 #classes for simulating responses to trains of pulses
-from .relaxes import ExperimentSetup, Relaxation
-from .common.core_utils import generate_Q, convert, r_tuple_from_r_name
+from relaxes import ExperimentSetup, Relaxation
+from common.core_utils import generate_Q, convert, r_tuple_from_r_name
 import numpy
 
 class Train:
@@ -23,13 +23,13 @@ class Train:
         #lo_rates = copy.deepcopy(rates)
         #hi_rates = copy.deepcopy(rates)
         
-        print(("make Qlo, conc: "+str(self.zero_conc) ))
+        print("make Qlo, conc: "+str(self.zero_conc) )
         
         #rates is deepcopied in generate_Q so doesn't propagate 
         self.Qlo, self.P_init_lo = generate_Q(N_states, {1: self.zero_conc}, 
                                             rates, param.MR_rate, param.MR_avoid)
         
-        print(("make Qhi, conc: "+str(self.high_conc)))
+        print("make Qhi, conc: "+str(self.high_conc))
         self.Qhi, self.P_init_hi = generate_Q(N_states, {1: self.high_conc}, 
                                             rates, param.MR_rate, param.MR_avoid)
 
@@ -232,9 +232,9 @@ class RCJ_Train:
                             r = r + ju * exp(k * dt)
 
                         except:
-                            print((len(self.t), r, ju, k, Qc_w.w[:,s]))
-                            print((Qc_w.eigenval))
-                            print((Qc_w.Q))
+                            print (len(self.t), r, ju, k, Qc_w.w[:,s])
+                            print (Qc_w.eigenval)
+                            print (Qc_w.Q)
                             break
                     P[s] = r                    #update P stepwise  
 
@@ -278,7 +278,7 @@ class JFExpt():
     def run(self, jumps_list = [1, 50, 125, 500, 5000]):
         """jumps_list is the length of each jump in ms"""
         
-        print(("Jumps family with {0} ms jumps.".format(jumps_list)))
+        print ("Jumps family with {0} ms jumps.".format(jumps_list))
         for j in jumps_list:
            
             #define post-pulse relaxation time
@@ -325,7 +325,7 @@ class TrainExpt(ExperimentSetup):
         pfreq  : pulse frequency in Hz
         """
         #print ("Did trainexpt get sim_name? "+ self.param.sim_name)
-        print(("Train Experiment with {0} ms pulse width, {1} Hz pulse frequency and {2} pulses in train.".format(pwidth, pfreq, n)))
+        print ("Train Experiment with {0} ms pulse width, {1} Hz pulse frequency and {2} pulses in train.".format(pwidth, pfreq, n))
         if not mod: mod = ""
         self.header = ""
         
@@ -350,7 +350,7 @@ class TrainExpt(ExperimentSetup):
             #keys of ra are the rate tuple
             #refer with rate name
             self.table += str(r[0]) + '\t'
-            print(('\n------\nTrial#\t' + str(r[0])))
+            print ('\n------\nTrial#\t' + str(r[0]))
             
             #add rates to line of table in order
             for _rtc in self.param.rate_to_change:
@@ -358,16 +358,16 @@ class TrainExpt(ExperimentSetup):
                 _rate_changed = _ra[r_tuple_from_r_name(_ra, _rtc)][1][0]
                 rtc_print = "{0}\t".format(_rate_changed)
                 self.table +=  rtc_print            
-                print((str(_rtc) + rtc_print))
+                print (str(_rtc) + rtc_print)
             
-            print((self.open_states))
+            print (self.open_states)
             self.table += "{0}\n".format(self.open_states)
             
             #hack, put the last rate from rate_to_change this string each time
             self.header += str(self.param.sim_name) + "_" + mod + "_{0:.2f}".format(_rate_changed) + "\t"
             #self.overall_printout += t.printout
             
-            print((t.printout))
+            print (t.printout)
             
         #add the time points and stimulus from the final train calc (all identical)
         self.trace_set.append(t.t)

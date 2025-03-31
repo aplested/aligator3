@@ -54,7 +54,7 @@ def rise_threshold(trace, lo, hi):
         peak_negative = False
  
     max_idx = trace.argmax()
-    print(("peak at index {0} of {1} elements".format(max_idx, l)))
+    print ("peak at index {0} of {1} elements".format(max_idx, l))
     # find index of max point
 
     #slice array and use only rising phase
@@ -148,15 +148,15 @@ if __name__ == "__main__":
         aa, bb, cc, dd, ee, ff = fall_threshold (da, low, high)
         #print a,b,c,d
 
-        print(("data {0}".format(da)))
-        print(("{0} - {1}% rise time = {2:.3f} samples".format(int(low * 100), int(high * 100), e - f)))
-        print(("{0} - {1}% fall time = {2:.3f} samples".format(int(low * 100), int(high * 100), ee - ff)))
-        print(("Rising a: {0:.3f}, data[b]: {1:.3f}, c: {2:.3f}, data[d]: {3:.3f}".format(a, da[b], c, da[d])))
-        print(("Falling aa: {0:.3f}, data[bb]: {1:.3f}, cc: {2:.3f}, data[dd]: {3:.3f}".format(aa, da[bb], cc, da[dd])))
+        print ("data {0}".format(da))
+        print ("{0} - {1}% rise time = {2:.3f} samples".format(int(low * 100), int(high * 100), e - f))
+        print ("{0} - {1}% fall time = {2:.3f} samples".format(int(low * 100), int(high * 100), ee - ff))
+        print ("Rising a: {0:.3f}, data[b]: {1:.3f}, c: {2:.3f}, data[d]: {3:.3f}".format(a, da[b], c, da[d]))
+        print ("Falling aa: {0:.3f}, data[bb]: {1:.3f}, cc: {2:.3f}, data[dd]: {3:.3f}".format(aa, da[bb], cc, da[dd]))
         
         
     a, b, c, d, e, f = rise_threshold (data, .5, .6)       #.6 is not used
     aa, bb, cc, dd, ee, ff = fall_threshold (data, .5, .6)
-    print(("{0:f}, {1:f}, {2:f}, {3:f}, {4:f}, {5:f}".format(a, b, c, d, e, f)))
-    print(("{0:f}, {1:f}, {2:f}, {3:f}, {4:f}, {5:f}".format(aa, bb, cc, dd, ee, ff)))
-    print(("FWHM = {0:.3f}".format(ee - e)))
+    print ("{0:f}, {1:f}, {2:f}, {3:f}, {4:f}, {5:f}".format(a, b, c, d, e, f))
+    print ("{0:f}, {1:f}, {2:f}, {3:f}, {4:f}, {5:f}".format(aa, bb, cc, dd, ee, ff))
+    print ("FWHM = {0:.3f}".format(ee - e))

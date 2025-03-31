@@ -27,14 +27,14 @@
 #   October 2013: building pairwise comparisons (for two mechanisms)
 
 
-from __future__ import print_function
+
 from math import exp, log10
 import copy
 import numpy
-from mechanisms import mechanism
+from .mechanisms import mechanism
 #from qmat import Q_mat
-from common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
-import common.rcj_lib as rcj
+from .common.core_utils import generate_Q, r_tuple_from_r_name, convert, convert_ms
+from . import common.rcj_lib as rcj
 
 __author__="Andrew"
 __date__ ="$Jun 12, 2010 9:10:37 AM$"
@@ -50,7 +50,7 @@ class Parameters(dict):
         if parameters == None: 
             self.set_defaults()  
         else:
-            for d in parameters.keys():
+            for d in list(parameters.keys()):
                 self[d] = parameters[d]
 
     def __getattr__(self, param):
@@ -84,7 +84,7 @@ class Parameters(dict):
         """Remove rate tuples from 'MR_rate' that are not in the mechanism"""
         for rate_tuple in self['MR_rate']:
             
-            if rate_tuple not in mech_rates.keys():
+            if rate_tuple not in list(mech_rates.keys()):
                 self['MR_rate'].remove(rate_tuple)
                 print ("Removed " + str(rate_tuple) + " from MR_rate")
                 
@@ -718,7 +718,7 @@ class Relaxation:
         self.relax_sum = numpy.zeros([len(self.pts)])
         
         #Sum slices, each of which is P(s)(full t range), weighted by conductance
-        for s in self.states_sum.keys():
+        for s in list(self.states_sum.keys()):
             #self.states_sum[s] is the conductance of state s
             self.relax_sum += self.relax [:,s] * self.states_sum[s]
             #print self.relax_sum

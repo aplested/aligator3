@@ -27,14 +27,14 @@ def get_rise_fall (data, low=0.1, high=0.9):
     rise = f - e
     fall = ee - ff
         
-    print(("{0} - {1}% rise time = {2:.3f} samples".format(int(low * 100), int(high * 100), rise)))
-    print(("{0} - {1}% fall time = {2:.3f} samples".format(int(low * 100), int(high * 100), fall)))   
+    print ("{0} - {1}% rise time = {2:.3f} samples".format(int(low * 100), int(high * 100), rise))
+    print ("{0} - {1}% fall time = {2:.3f} samples".format(int(low * 100), int(high * 100), fall))   
     
     fall_tau =  fall / ln(9)      # scaling time taken to lose 80% of amplitude 
                                     # fall = t10 - t90
                                     # ln (0.9) - ln (0.1) = ln( 0.9 / 0.1 )  or ln (9)
                                     
-    print(("Equivalent exponential tau for falling phase: {0:.3f} samples".format(fall_tau)))
+    print ("Equivalent exponential tau for falling phase: {0:.3f} samples".format(fall_tau))
     max = data.max()
     min = data.min()
     
@@ -95,12 +95,12 @@ if __name__ == "__main__":
         # not sure if open_states is needed here
         rd, N_states, open_states = mechanism(mech, factor)     
         for rise in rise_times:
-            print(("\n\nRate dictionary: {0}\
+            print ("\n\nRate dictionary: {0}\
             \nNumber of states: {1}\
             \nOpen states : {2}\
             \nSolution rise time : {3} ms\
             \nBinding Rate Factor : {4}\n\
-            ".format(rd, N_states, open_states, rise, factor)))
+            ".format(rd, N_states, open_states, rise, factor))
             
             Sim = re.RCJ_Train(pulse_n, pulse_l, freq, rise, param, N_states, open_states, rd, sample=sample_us)
             Sim.build()

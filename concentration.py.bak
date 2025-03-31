@@ -1,5 +1,5 @@
 #concentration response and concentration inhibition responses from original relaxes.py
-from .relaxes import ExperimentSetup
+from relaxes import ExperimentSetup
 class CrExpt(ExperimentSetup):
     #moved from relaxes_w.py
     """construct concentration response relations (peak and ss)
@@ -8,7 +8,7 @@ class CrExpt(ExperimentSetup):
     
     def run(self, min_conc = 10e-8, max_conc = 10e-2):
         
-        print(("Conc. Response Experiment with {0} M minimum, and {1} M maximum, concentration.".format(min_conc, max_conc)))
+        print ("Conc. Response Experiment with {0} M minimum, and {1} M maximum, concentration.".format(min_conc, max_conc))
         self.txt_curves = ''
         for r in self.rs.rates_set:
             _ra = r[1]
@@ -23,14 +23,14 @@ class CrExpt(ExperimentSetup):
             #keys of ra are the rate tuple
             #refer to it with rate name
             for _rtc in self.param.rate_to_change:
-                print((str(_rtc)))
+                print (str(_rtc))
                 _rate_changed = _ra[r_tuple_from_r_name(_ra, _rtc)][1][0]
             
                 self.table += str(r[0]) + '\t' + str(_rate_changed) + '\n'
             
                 head = '\n-\nTrial#\t' + str(r[0]) + '\t' + str(self.param.rate_to_change) + '\t' + str(_rate_changed) + '\n'
             
-            print((cr.printout))
+            print (cr.printout)
             self.txt_curves += head
             self.txt_curves += cr.printout
             
@@ -80,7 +80,7 @@ class ConcResponse:
             #take resting (i.e. zero concentration) equilibrium for start of jump
             Q_z, self.P_init = generate_Q(self.N_states, {1: param.zero_conc},
                                         self.rates, self.MR_rate, self.MR_avoid)
-            print(("self.P_init:", self.P_init))
+            print ("self.P_init:", self.P_init)
         else:
             self.P_init = P_init
         
@@ -103,12 +103,12 @@ class ConcResponse:
             drugs[agonist_to_use] = agonist_conc
 
             Q_conc,  P_eq = generate_Q(self.N_states, drugs, self.rates, self.MR_rate, self.MR_avoid)
-            print(("Calculating relaxation with following drug concentration" + 
-                    str(drugs) + ", giving Qmat:\n" + str(Q_conc.Q)))
+            print ("Calculating relaxation with following drug concentration" + 
+                    str(drugs) + ", giving Qmat:\n" + str(Q_conc.Q))
             #print 'P_init', P_init
 
             r = Relaxation(Q_conc, self.P_init)
-            print((self.open_states))
+            print (self.open_states)
             r.assemble(_log_t_step, self.open_states)
             
             #take max of hi-conc jump
@@ -116,12 +116,12 @@ class ConcResponse:
             self.responses.append(r.relax_sum)
 
             eqbm = r.relax_sum[-1]
-            print(("Equilibrium P-open, only true if conductances are normalised: ", eqbm))
+            print ("Equilibrium P-open, only true if conductances are normalised: ", eqbm)
             onems = r.relax_sum[15]     #1ms point is normally the 15th in time series (HACK)
             #store points
             self.curve [n] = (agonist_conc, max_response, eqbm, onems)
         
-        print((self.curve))
+        print (self.curve)
         self.make_printable()
         
     def make_printable(self):

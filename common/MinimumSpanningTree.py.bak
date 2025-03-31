@@ -4,13 +4,13 @@ __author__="David Eppstein and Andrew Plested"
 __date__ ="$April, 2006 10:46:53 PM$"
 
 import numpy
-from .UnionFind import UnionFind
+from UnionFind import UnionFind
 import sys
 import copy
-from . import IO_utils as rcj_IO
+import IO_utils as rcj_IO
 import os
-from . import Q_input
-from . import qmat
+import Q_input
+import qmat
 
 class MR_trees:
     
@@ -38,7 +38,7 @@ class MR_trees:
                 self.edges.remove(rev_edge)
 
         if self.verbose:
-            print('Including all',len(self.edges) ,'edges only once', self.edges)
+            print 'Including all',len(self.edges) ,'edges only once', self.edges
         
     def MinimumSpanningTree(self):
         """
@@ -64,7 +64,7 @@ class MR_trees:
         self.edges.sort()
         #print self.edges
         for W,u,v in self.edges:
-            if self.verbose: print(subtrees)
+            if self.verbose: print subtrees
             if subtrees[u] != subtrees[v]:
                 tree.append((u,v))
                 subtrees.union(u,v)
@@ -79,15 +79,15 @@ class MR_trees:
         """Use trial spanning tree to check the status of the set of included or excluded edges"""
         #edge has not been added to list of included or excluded edges yet
         
-        if self.verbose: print(self.graph)
+        if self.verbose: print self.graph
         self.get_edges()
         #get a trial spanning tree based on latest weights
         self.MinimumSpanningTree()
         trial_tree = self.m_s_tree
 
         if self.verbose:
-            print(('Trial tree' + str(trial_tree)))
-            print(edge)
+            print ('Trial tree' + str(trial_tree))
+            print edge
 
         status = ''
 
@@ -131,9 +131,9 @@ class MR_trees:
             self.out_edges.append(edge)
 
         if len(self.out_edges) != 0 and self.verbose:
-            print('Currently forcing exclusion of edges:',self.out_edges)
+            print 'Currently forcing exclusion of edges:',self.out_edges
         if len(self.in_edges) != 0 and self.verbose:
-            print('Currently forcing inclusion of edges:',self.in_edges)
+            print 'Currently forcing inclusion of edges:',self.in_edges
 
         return status
     
@@ -142,7 +142,7 @@ class MR_trees:
         """Get user input for edge to exclude from tree"""
         # If no edge is provided, ask for one
         if edge == None:
-            e = input('Enter edge to use for MR (exclude from tree) [initial final] <enter> to skip/end:')
+            e = raw_input('Enter edge to use for MR (exclude from tree) [initial final] <enter> to skip/end:')
             if e == '':
                 # status, edge = None
                 return None, None
@@ -151,8 +151,8 @@ class MR_trees:
                 #print edge_string
             
         if self.verbose:
-            print(edge)
-            print(self.graph)
+            print edge
+            print self.graph
         
         edge = list(str(x) for x in edge)
         
@@ -169,7 +169,7 @@ class MR_trees:
 
         # If no edge is provided, ask for one
         if edge == None:
-            e = input('Enter edge to include in the tree (avoid for MR)[initial final] <enter> to skip/end: ')
+            e = raw_input('Enter edge to include in the tree (avoid for MR)[initial final] <enter> to skip/end: ')
             if e == '':
                 # status, edge = None
                 return None, None
@@ -177,8 +177,8 @@ class MR_trees:
                 edge = e.split(' ')
 
         if self.verbose:
-            print(edge)
-            print(self.graph)
+            print edge
+            print self.graph
         
         edge = list(str(x) for x in edge)
         
@@ -212,7 +212,7 @@ class MR_trees:
     def Find_MR_Paths(self, MR_use):
         """Use graph with weights set up to find paths using Dijkstra"""
 
-        if self.verbose: print('Edges:', self.edges)
+        if self.verbose: print 'Edges:', self.edges
         for edge in self.edges:
 
             rev_edge = (edge[0],edge[2],edge[1])
@@ -221,9 +221,9 @@ class MR_trees:
             #print 'Edge',edge[1:],'in graph'
             #lose weights
             if edge[1:] not in self.m_s_tree and rev_edge[1:] not in self.m_s_tree:
-                if self.verbose: print(edge,'not in tree')
+                if self.verbose: print edge,'not in tree'
                 G_red = copy.deepcopy(self.graph)
-                if self.verbose: print('graph including MR_path', G_red)
+                if self.verbose: print 'graph including MR_path', G_red
                 #print "MR_use", MR_use
                 if MR_use != None:
                     #print 're1',tuple(int(x) for x in rev_edge[1:]), MR_use
@@ -234,18 +234,18 @@ class MR_trees:
                 b = edge[2]
                 
                 if self.verbose:
-                    print("a", a)
-                    print(G_red [a])
-                    print("b", b)
-                    print(G_red [b])
+                    print "a", a
+                    print G_red [a]
+                    print "b", b
+                    print G_red [b]
                 
                 del G_red [a][b]
                 del G_red [b][a]
                 
                 if self.verbose:
-                    print('graph with MR_path removed', G_red)
+                    print 'graph with MR_path removed', G_red
 
-                print('finding MR path from node',a,'to node',b,'using dijkstra')
+                print 'finding MR path from node',a,'to node',b,'using dijkstra'
                 
                 #call djikstra including kwargs to make sure tuples a and b are not
                 #used to fill in the gaps - was giving crazy visited, distances and
@@ -265,7 +265,7 @@ class MR_trees:
                     #update position
                     current = next
                     
-                print(('MR_path ('+str(a)+' to '+str(b)+') is '+str(MR_path_edges)))
+                print ('MR_path ('+str(a)+' to '+str(b)+') is '+str(MR_path_edges))
                 self.MR_paths[edge[1:]] = MR_path_edges
 
     def setup_MR(self, include=[], exclude=[]):
@@ -273,17 +273,17 @@ class MR_trees:
         Arguments -- include : list of tuples of rates to include in tree; default []
                      exclude : list of tuples of rates to use for MR; default []
         """
-        if include == []: print("MR include == None")
+        if include == []: print "MR include == None"
         if include!= []:
             for edge in include:
                 result, e = self.choose_edge_in(edge)
                 if result and self.verbose:
                     print (result)
         
-        if exclude == []: print("MR exclude == None")
+        if exclude == []: print "MR exclude == None"
         if exclude != []:
             for edge in exclude:
-                print(edge, exclude)
+                print edge, exclude
                 result, e = self.choose_edge_out(edge)
                 if result and self.verbose:
                     print (result)
@@ -292,18 +292,18 @@ class MR_trees:
         self.Find_MR_Paths(exclude)
 
         if self.verbose:
-            print('Spanning tree', self.m_s_tree)
-            print('There are ',len(self.edges) - len(self.m_s_tree),'loops')
+            print 'Spanning tree', self.m_s_tree
+            print 'There are ',len(self.edges) - len(self.m_s_tree),'loops'
 
             for MR_rate in self.MR_paths:
             #MR paths are stored according to the rate they describe
-                print(MR_rate, self.MR_paths[MR_rate])
+                print MR_rate, self.MR_paths[MR_rate]
     
     def UserDefMR(self):
         """Take user input to define MR on mechanism"""
-        print('Graph is:')
+        print 'Graph is:'
         for key in self.graph:
-            print((key, self.graph[key]))
+            print (key, self.graph[key])
 
         result = 'Try'
         while result:
@@ -319,14 +319,14 @@ class MR_trees:
 
         self.MinimumSpanningTree()
 
-        print('Spanning tree', self.m_s_tree)
+        print 'Spanning tree', self.m_s_tree
 
-        print('There are ', len(self.edges) - len(self.m_s_tree), 'loops')
+        print 'There are ', len(self.edges) - len(self.m_s_tree), 'loops'
         self.Find_MR_Paths()
 
         for MR_rate in self.MR_paths:
             #MR paths are stored according to the rate they describe
-            print(MR_rate,self.MR_paths[MR_rate])
+            print MR_rate,self.MR_paths[MR_rate]
 
 def edge_dituple (e):
     """
@@ -370,7 +370,7 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
 
     if start == end:
         # we've found our end node, now find the path to it, and return
-        if verbose: print('Found', end)
+        if verbose: print 'Found', end
         path=[]
         while end != None:
             path.append(end)
@@ -378,11 +378,11 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
         return distances[start], path[::-1]
 
     # process neighbors as per algorithm, keep track of predecessors
-    if verbose: print('moved to node',start, ', looking for',end)
+    if verbose: print 'moved to node',start, ', looking for',end
 
     for neighbor in graph[start]:
         if neighbor not in visited:
-            neighbordist = distances.get(neighbor, sys.maxsize)
+            neighbordist = distances.get(neighbor, sys.maxint)
             tentativedist = distances[start] + graph[start][neighbor]
             if tentativedist < neighbordist:
                 distances[neighbor] = tentativedist
@@ -390,10 +390,10 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
     # neighbors processed, now mark the current node as visited
     visited.append(start)
     # finds the closest unvisited node to the start
-    unvisiteds = dict((k, distances.get(k, sys.maxsize)) for k in graph if k not in visited)
+    unvisiteds = dict((k, distances.get(k, sys.maxint)) for k in graph if k not in visited)
     #fixed unvisited nodes distance problem, tuples were filling in unspec'd kwargs
     if verbose:
-        print('unvisited nodes and their cumulative distances:\n',unvisiteds)
+        print 'unvisited nodes and their cumulative distances:\n',unvisiteds
     
     closestnode = min(unvisiteds, key = unvisiteds.get)
     # now we can move to the closest node and recurse, making it current
@@ -453,7 +453,7 @@ def get_Q_file ():
             useable_input_files.append(prt_file)
 
         elif os.path.isdir(prt_file):          #ignore directories!
-            print('Ignoring direcory: %s' %prt_file)
+            print 'Ignoring direcory: %s' %prt_file
 
         elif prt_file[0] == "." and not sys_ignored: #UNIX hidden file
             sys_ignored = True
@@ -461,7 +461,7 @@ def get_Q_file ():
 
         elif prt_file[0] == "." and sys_ignored: pass
 
-        else : print('Ignoring %s' %prt_file)        #ignore all other files
+        else : print 'Ignoring %s' %prt_file        #ignore all other files
     
     return useable_input_files, output_directory
 
@@ -476,7 +476,7 @@ def get_Q_from_prt (chosen_prt, op_dir, c=1e-9, verbose=True, user=False):
     
     rates_filename, N_open, src_prog = rcj_IO.prt_to_rates(chosen_prt, op_dir)
     if verbose:
-        print('Detected that ',chosen_prt, ' is a ',src_prog,' printout file')
+        print 'Detected that ',chosen_prt, ' is a ',src_prog,' printout file'
 
     open_states = []            
     #make a list of the numbered open states 
@@ -485,7 +485,7 @@ def get_Q_from_prt (chosen_prt, op_dir, c=1e-9, verbose=True, user=False):
     for o in range (N_open):
         open_states.append(o)
     
-    if verbose: print('Open state list', open_states)
+    if verbose: print 'Open state list', open_states
 
     prt_file_lines, read_from_file   = rcj_IO.read_rate_file (rates_filename)
     rate_dict = Q_input.rates_read(prt_file_lines, src_prog)
