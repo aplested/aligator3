@@ -1,0 +1,9 @@
+.DS_Store
+Archive.zip
+*.pyc
+nbproject/
+old_Code/
+sim results/
+mechanisms_140105.py
+mechanisms_albert.py
+

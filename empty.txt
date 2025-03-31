@@ -1,0 +1,10 @@
+(dp1
+S'last_saved_timestamp'
+p2
+S'141030-193840'
+p3
+sS'config_filename'
+p4
+S'Empty.txt'
+p5
+s.

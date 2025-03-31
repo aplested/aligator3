@@ -1,0 +1,51 @@
+RCJ - Calculation of relaxations in response to Realistic Concentration Jumps
+Version 0.1
+
+needs python 2.7 and numpy to run
+
+rcj is the main() module
+Parameters can be set in the dictionaries found within this script
+
+Type python rcj.py to run 
+
+No idea if mac/unix specific file/text operations translate (probably not). Probably much happier under *nix.
+
+MODULES:
+
+MinimumSpanningTree : Kruskal's and Dijkstra's algorithms and interface to Q matrix form
+rcj_lib             : Library of functions for calculating and outputting jump profiles, including some NUMPY compatible
+rcj_numlib          : Full conversion of rcj_lib to NUMPY (not in use)
+qmat                : Class of Q matrix manipulations, including setting up and implementing microscopic reversibility
+rcj_Processor       : Batch and wrapping functions to organise repeated rcj simulations
+Q_input             : User-driven and automatic algorithms for converting DC_Progs printouts into mechanisms
+UnionFind           : A class used in Kruskal's algorithm
+IO_utils            : reading input and writing output 
+core_utils          : Utility functions for calculations
+Error_jump
+
+
+rcj script Work flow
+---------------- 
+
+a) finds HJCFIT_WIN printout files with suffix .txt in a directory selected by the user
+
+For each printout file found, 
+
+b) scrapes final rate constants and finds number of open states
+c) reconstructs the Q-matrix 
+c) makes a new directory, moves the printout there and saves the rates in text file
+d) subjects each mechanism to a series of concentration jumps (alter parameters in script to change)
+e) saves occupancy of all states, or just P-open into a tab-delimited text file in the new directory
+f) merges relaxations into a single file _merged.xls for opening in excel or igor
+
+At the moment, the terminal output isn't saved; this can be acquired using copy paste to a log file.
+
+14.06.11 Threshold function for rise time not wrapped in yet
+12.12.11 MR function through spanning trees can be included
+
+28.3.13 Process of reconstructing entire package using classes to represent
+    hierarchies in experiments.
+    Relaxation > Train > Set of Experiments on Trains
+    similar ideas for concentration response and wrapping rcj (also into trains)
+
+
