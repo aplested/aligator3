@@ -206,7 +206,7 @@ class MR_trees:
         vertex_b = edge[1]
         self.graph [vertex_a] [vertex_b] = len(self.graph)
         self.graph [vertex_b] [vertex_a] = len(self.graph)
-        #print "len s.graph:", len(self.graph)
+       
     
     def Find_MR_Paths(self, MR_use):
         """Use graph with weights set up to find paths using Dijkstra"""
@@ -216,7 +216,7 @@ class MR_trees:
     
         if self.verbose: print('Edges:', self.edges)
         
-        #make a copy - the reduced graph
+        #make a copy to form the reduced graph
         G_red = copy.deepcopy(self.graph)
         
         # remove edges from graph that are not in m_s_tree
@@ -239,16 +239,16 @@ class MR_trees:
                 del G_red [a][b]
                 del G_red [b][a]
         
-        print ("G_red, edges removed with original weights")
-        print (G_red)
+        if self.verbose: print ("G_red, edges removed with original weights\n", G_red)
+      
         
         #reset all weights in tree
         for node in G_red:
             G_red[node] = dict.fromkeys(G_red[node],1)
             
-        print ("G_red with weights reset")
-        print (G_red)
-        #go back and run dijkstra on for each edge not in m_s_tree
+        if self.verbose: print ("G_red with weights reset", G_red)
+       
+        #run dijkstra on for each edge not in m_s_tree
         for edge in self.edges:
 
             rev_edge = (edge[0],edge[2],edge[1])
@@ -269,7 +269,7 @@ class MR_trees:
                 #predecessors
                 
                 MR_path = dijkstra(G_red, st, en, visited=[], distances={}, predecessors={})
-                print ("MR_PATH", MR_path)
+                #print ("MR_PATH", MR_path)
                 MR_path_nodes = MR_path[1]
                 MR_path_edges = []
                 current = st
@@ -286,7 +286,7 @@ class MR_trees:
                 self.MR_paths[edge[1:]] = MR_path_edges
 
     def Find_MR_Paths_old(self, MR_use):
-        """Use graph with weights set up to find paths using Dijkstra"""
+        """do not use - several mistakes! find paths using Dijkstra"""
         
         ###THIS OLD VERSION DOES NOT USE SPANNING TREE PROPERLY, only removes one edge at a time
         if self.verbose: print('Edges:', self.edges)
@@ -366,14 +366,12 @@ class MR_trees:
                     print (result)
 
         self.MinimumSpanningTree()
-        print('Spanning tree', self.m_s_tree)
-        print('graph', self.graph)
+        print('Found the spanning tree, there are',len(self.edges) - len(self.m_s_tree),'loops, here\'s the list of edges in the tree:\n', self.m_s_tree)
+        
+        #print('graph', self.graph)
         self.Find_MR_Paths(exclude)
 
         if self.verbose:
-            #print('Spanning tree', self.m_s_tree)
-            print('There are ',len(self.edges) - len(self.m_s_tree),'loops')
-
             for MR_rate in self.MR_paths:
             #MR paths are stored according to the rate they describe
                 print(MR_rate, self.MR_paths[MR_rate])
@@ -443,11 +441,11 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
     # Find shortest path between two vertices.
     # Graph argument : a dictionary of vertex-cost dictionaries.
  
-    verbose = True
+    verbose = False
     # detect if it's the first time through, set current distance to zero
     if not visited:
         distances[start] = 0
-        print (graph)
+        if verbose: print (graph)
         
     if start == end:
         # we've found our end node, now find the path to it, and return
@@ -478,7 +476,7 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
     
     # now we can move to the closest node and recurse, making it the start of the next iteration
     closestnode = min(unvisiteds, key = unvisiteds.get)
-    print ("Closest node", closestnode)
+    if verbose: print ("Closest node", closestnode)
     
     return dijkstra(graph, closestnode, end, visited, distances, predecessors)
 
