@@ -91,24 +91,24 @@ class MR_trees:
 
         status = ''
 
-        #check if edges that requested to be in, are in
+        #check if edges that were requested to be in, can be in
         for in_edge in self.in_edges:
             k = edge_dituple(in_edge)
             #print k, k[0], k[1], k[0] not in trial_tree, k[1] not in trial_tree
             if ((k[0] not in trial_tree) and (k[1] not in trial_tree)):
-                status += 'Failure '+str(in_edge)+' must be out of tree\n'
+                status += 'Failure! '+str(in_edge)+' must be out of tree\n'
                 break
             else:
-                status += 'Success! '+str(in_edge)+' can be in tree\n'
+                status += str(in_edge)+' is in tree\n'
                 
-        #check if edges that should be out, are out
+        #check if edges that should be out, can be out
         for out_edge in self.out_edges:
             k = edge_dituple(out_edge)
             if ((k[0] in trial_tree) or (k[1] in trial_tree)):
-                status += 'Failure '+ str(out_edge) +' must be in tree\n'
+                status += 'Failure! '+ str(out_edge) +' must be in tree\n'
                 break
             else:
-                status += 'Success '+str(out_edge)+' can be out of tree\n'
+                status += str(out_edge)+' is out of tree\n'
 
         double_edge = edge_dituple(edge)
         if shouldbe == 'in' and (double_edge[0] not in trial_tree and double_edge[1] not in trial_tree):
@@ -353,17 +353,18 @@ class MR_trees:
         if include == []: print("MR include == None")
         if include!= []:
             for edge in include:
+                print("Tree include (MR avoid) == ",edge)
                 result, e = self.choose_edge_in(edge)
-                if result and self.verbose:
-                    print (result)
+                #if result and self.verbose:
+                print (result)
         
         if exclude == []: print("MR exclude == None")
         if exclude != []:
             for edge in exclude:
-                print(edge, exclude)
+                print("Tree exclude (MR use) == ",edge)
                 result, e = self.choose_edge_out(edge)
-                if result and self.verbose:
-                    print (result)
+                #if result and self.verbose:
+                print (result)
 
         self.MinimumSpanningTree()
         print('Found the spanning tree, there are',len(self.edges) - len(self.m_s_tree),'loops, here\'s the list of edges in the tree:\n', self.m_s_tree)

@@ -157,7 +157,7 @@ def getpath(fixed=True, work_dir='/Users/Andrew'):
     '''
 
     if os.path.exists(work_dir) == False:
-        print ("working directory doesn't exist, using current directory")
+        print ("Unfortunately the suggested working directory doesn't exist, using current directory instead.\n")
         work_dir = os.getcwd()
 
     os.chdir(work_dir)

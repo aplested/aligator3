@@ -85,8 +85,10 @@ class Q_mat:
             
             if params['MR_option'] == 'Automatic':
                 #This should be reproducible and quite fast.
-                print ('\n-------------\nAutomatic MR\n--------------')
-                print(('Parameters ( [use] [avoid] ): ' + str(params['MR_use']) + str(params['MR_avoid'])+'\n'))
+                print ('\n-------------\nAutomatic MR\n-------------')
+                print(('Parameters ( [avoid] [use] ): ' + str(params['MR_avoid']) + str(params['MR_use'])))
+                print ('Hint - \'avoid\' means requested to be in the tree, \'use\' means requested to be out of tree\n')
+                
                 self.mst.setup_MR(params['MR_avoid'], params['MR_use'])
                 #print self.mst.MR_paths good for debugging perhaps but otherwise overkill
             

@@ -58,8 +58,9 @@ def package(expt_list=["train", "rec", "relax", "cr"], mech_list=["3"], rate="al
             ##  'lo_exp'         = -1.5
         
             ##  'MR_rate'        = [(1,7), (0,5), (7,8), (5,6)]
-            param.MR_avoid       = [(0,5)]
-            ##  'zero_conc'      = 0 
+            param.MR_rate    = [(0,5), (0,1), (5,3)]
+            #param.MR_avoid       = [(0,5)]
+            ##  'zero_conc'      = 0
             ##  'high_conc'      = 1e-2
             
             #edit simulation name to include mechanism used
@@ -103,8 +104,8 @@ if __name__ == "__main__":
     
     #import parameters from config module
     #implement more concise unpacking?, with defaults to rescue missing values
-    print("The current working directory is {0}".format(os.getcwd()))
-    # read pickled config module 
+    print("\nThe current directory is {0}".format(os.getcwd()))
+    # read pickled config module
     # there is a default.txt configuration
     config_file = "default.txt"
     
@@ -136,7 +137,7 @@ if __name__ == "__main__":
     # moved up to allow manual override of "mod" or "working_directory"
     # alter mechanims.py to put a new mechanism in. 
     expt_list=['jumpfamily'] 
-    mech_list=['3']
+    mech_list=['3', '4']
     mod='_CP redo'
     #rate=['beta']#, 'd2op_min', "d2_min", "d1_plus"]
     #power = [1]#, 1, 1, 1]
@@ -148,7 +149,7 @@ if __name__ == "__main__":
     power=[1, 1]
     #alternatively, run comparison experiment
     
-    #move to working directory
+    #move to suggested working directory, if possible
     #the variable :file_list: is returned but not used here
     file_list, wd = iou.getpath(True, working_directory)
     
@@ -158,14 +159,15 @@ if __name__ == "__main__":
     timestr = time.strftime("%y%m%d-%H%M%S")   
     iou.make_folder(timestr + mod, wd)
     
-    Log = Logger(timestr+'_log.txt')        #create logfile
+    Log = Logger(timestr+'_log.txt')        #create logfile and start logging Std_out from here
     announce()                              #announce program version
     
-    if config_imported: print(("\nConfiguration file "+config_file_used+" imported by config.py"))
-    print(('\nThis file is: '+timestr+'_log.txt'))
+    print(('\nThis log file is: '+timestr+'_log.txt'))
+    if config_imported: print(("Configuration file "+config_file_used+" imported by config.py"))
     
     
-    print(("\nParameters and settings used\nwd: {0}\nmod: {1}\nm_l: {2}\ne_l: {3}\nrate: {4}\npower: {5}\nrange: {6}\n".format(working_directory, mod, mech_list, expt_list, rate, power, range)))
+    
+    print("\nParameters and settings used:\nwd: {0}\nmod: {1}\nm_l: {2}\ne_l: {3}\nrate: {4}\npower: {5}\nrange: {6}\n".format(working_directory, mod, mech_list, expt_list, rate, power, v_range))
     
     if pair_expt:
         a = re.PairExpt()
