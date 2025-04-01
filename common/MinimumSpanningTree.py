@@ -207,11 +207,88 @@ class MR_trees:
         self.graph [vertex_a] [vertex_b] = len(self.graph)
         self.graph [vertex_b] [vertex_a] = len(self.graph)
         #print "len s.graph:", len(self.graph)
-        
-
+    
     def Find_MR_Paths(self, MR_use):
         """Use graph with weights set up to find paths using Dijkstra"""
+        # not sure that using weights is the right way!
+        # New version - remove all edges that are not in MST from self.graph
+        # then find MR paths one by one from G_Red
+    
+        if self.verbose: print('Edges:', self.edges)
+        
+        #make a copy - the reduced graph
+        G_red = copy.deepcopy(self.graph)
+        
+        # remove edges from graph that are not in m_s_tree
+        for edge in self.edges:
 
+            rev_edge = (edge[0],edge[2],edge[1])
+            if edge[1:] not in self.m_s_tree and rev_edge[1:] not in self.m_s_tree:
+                
+                if MR_use != None:
+                    #print 're1',tuple(int(x) for x in rev_edge[1:]), MR_use
+                    if tuple(int(x) for x in rev_edge[1:]) in MR_use:
+                        edge = rev_edge
+                
+                a = edge[1]
+                b = edge[2]
+                
+                if self.verbose:
+                    print("a", a, G_red [a], "b", b, G_red [b] )
+                
+                del G_red [a][b]
+                del G_red [b][a]
+        
+        print ("G_red, edges removed with original weights")
+        print (G_red)
+        
+        #reset all weights in tree
+        for node in G_red:
+            G_red[node] = dict.fromkeys(G_red[node],1)
+            
+        print ("G_red with weights reset")
+        print (G_red)
+        #go back and run dijkstra on for each edge not in m_s_tree
+        for edge in self.edges:
+
+            rev_edge = (edge[0],edge[2],edge[1])
+           
+            #print 'rev_edge',rev_edge
+            #print 'Edge',edge[1:],'in graph'
+            #lose weights
+            if edge[1:] not in self.m_s_tree and rev_edge[1:] not in self.m_s_tree:
+                if self.verbose: print(edge,'not in tree')
+               
+                st = edge[1]
+                en = edge[2]
+                
+                print('finding MR path from node',st,'to node',en,'using dijkstra')
+                
+                #call djikstra including kwargs to make sure tuples a and b are not
+                #used to fill in the gaps - was giving crazy visited, distances and
+                #predecessors
+                
+                MR_path = dijkstra(G_red, st, en, visited=[], distances={}, predecessors={})
+                print ("MR_PATH", MR_path)
+                MR_path_nodes = MR_path[1]
+                MR_path_edges = []
+                current = st
+                while MR_path_nodes:
+                    #print 'MR_path_nodes', MR_path_nodes
+                    next = MR_path_nodes.pop(0)
+                    #if self.verbose: print current,next
+                    if current != next:
+                        MR_path_edges.append([current,next])
+                    #update position
+                    current = next
+                    
+                print(('MR_path ('+str(st)+' to '+str(en)+') is '+str(MR_path_edges)))
+                self.MR_paths[edge[1:]] = MR_path_edges
+
+    def Find_MR_Paths_old(self, MR_use):
+        """Use graph with weights set up to find paths using Dijkstra"""
+        
+        ###THIS OLD VERSION DOES NOT USE SPANNING TREE PROPERLY, only removes one edge at a time
         if self.verbose: print('Edges:', self.edges)
         for edge in self.edges:
 
