@@ -42,7 +42,7 @@ class MR_trees:
         
     def MinimumSpanningTree(self):
         """
-        Return the minimum spanning tree of an undirected graph .
+        Put the minimum spanning tree of an undirected graph into self.m_s_tree.
         self.graph should be represented in such a way that self.graph[u][v] gives the
         length of edge u,v, self.graph[u] should give the list of the neighbours,
         and self.graph[u][v] should always equal self.graph[v][u].
@@ -222,8 +222,8 @@ class MR_trees:
             #lose weights
             if edge[1:] not in self.m_s_tree and rev_edge[1:] not in self.m_s_tree:
                 if self.verbose: print(edge,'not in tree')
-                G_red = copy.deepcopy(self.graph)
-                if self.verbose: print('graph including MR_path', G_red)
+                G_red = copy.deepcopy(self.graph) ####THIS IS A BIG MISTAKE!!!! SHOULD SEND MSTREE!!
+                if self.verbose: print('graph including MR_edge', G_red)
                 #print "MR_use", MR_use
                 if MR_use != None:
                     #print 're1',tuple(int(x) for x in rev_edge[1:]), MR_use
@@ -243,7 +243,7 @@ class MR_trees:
                 del G_red [b][a]
                 
                 if self.verbose:
-                    print('graph with MR_path removed', G_red)
+                    print('graph with MR_edge removed', G_red)
 
                 print('finding MR path from node',a,'to node',b,'using dijkstra')
                 
@@ -289,10 +289,12 @@ class MR_trees:
                     print (result)
 
         self.MinimumSpanningTree()
+        print('Spanning tree', self.m_s_tree)
+        print('graph', self.graph)
         self.Find_MR_Paths(exclude)
 
         if self.verbose:
-            print('Spanning tree', self.m_s_tree)
+            #print('Spanning tree', self.m_s_tree)
             print('There are ',len(self.edges) - len(self.m_s_tree),'loops')
 
             for MR_rate in self.MR_paths:
@@ -352,33 +354,35 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
 
     Arguments   --   
     graph           : the graph to search on
-    start           : starting node
+    start           : starting node for this iteration
     end             : end node
     visited         : nodes already visited (during recursion)
     distances       : cumulative distances along path  
     predecessors    : nodes that were visited that are on the path
     
     """
-    #This function is outside of MR_trees class because of recursion, and also
-    #desire to use on subgraphs that lack loop edges.
-    #Find shortest path between two vertices.
-    #Graph argument : a dictionary of vertex-cost dictionaries.
+    # This function is outside of MR_trees class because of recursion, and also
+    # desire to use on subgraphs that lack loop edges.
+    # Find shortest path between two vertices.
+    # Graph argument : a dictionary of vertex-cost dictionaries.
  
     verbose = True
     # detect if it's the first time through, set current distance to zero
-    if not visited: distances[start] = 0
-
+    if not visited:
+        distances[start] = 0
+        print (graph)
+        
     if start == end:
         # we've found our end node, now find the path to it, and return
-        if verbose: print('Found', end)
-        path=[]
+        if verbose: print('Found node', end)
+        path = []
         while end != None:
             path.append(end)
             end = predecessors.get(end, None)
         return distances[start], path[::-1]
 
     # process neighbors as per algorithm, keep track of predecessors
-    if verbose: print('moved to node',start, ', looking for',end)
+    if verbose: print('Moved to node', start, ', looking for', end)
 
     for neighbor in graph[start]:
         if neighbor not in visited:
@@ -393,10 +397,12 @@ def dijkstra(graph, start, end, visited=[], distances={}, predecessors={}):
     unvisiteds = dict((k, distances.get(k, sys.maxsize)) for k in graph if k not in visited)
     #fixed unvisited nodes distance problem, tuples were filling in unspec'd kwargs
     if verbose:
-        print('unvisited nodes and their cumulative distances:\n',unvisiteds)
+        print('Unvisited nodes and their cumulative distances:\n', unvisiteds)
     
+    # now we can move to the closest node and recurse, making it the start of the next iteration
     closestnode = min(unvisiteds, key = unvisiteds.get)
-    # now we can move to the closest node and recurse, making it current
+    print ("Closest node", closestnode)
+    
     return dijkstra(graph, closestnode, end, visited, distances, predecessors)
 
 
