@@ -144,7 +144,7 @@ def make_jump(pa):
     ss = pa['step_size']
     rl = pa['record_length']
     
-    samples = rl / ss
+    samples = int (rl / ss)
     
     #very ugly- made twice in different places because of different ways to make jumps.
     t_point = numpy.arange(0, rl, ss)

@@ -28,8 +28,9 @@ def prt_to_rates(filename, output_dir):
         previously_converted = True
     else:
         previously_converted = False
-        
-    f = open(filename, 'r')
+     
+    #2026 : Fails with an HJCFIT printout that doesn't obey utf-8 without latin-1 encoding 
+    f = open(filename, 'r', encoding='latin-1')
     #For each file, grab whole thing as a string
     s=f.read()
     #print s[2:20]

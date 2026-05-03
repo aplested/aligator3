@@ -9,10 +9,10 @@ __date__ ="$Jan 11, 2011 12:01:30 PM$"
 
 import os.path
 import os
-import rcj_lib
-import IO_utils as rcj_IO
+import common.rcj_lib as rcj_lib
+import common.IO_utils as rcj_IO
 import shutil
-import Q_input
+import common.Q_input as Q_input
 
 def get_rise_fall (file_containing_trace):
     '''
@@ -181,9 +181,15 @@ def rcj_batch (ip_set, jump_paras, op_set):
 
     sys_ignored = False
     
+    files_to_ignore = ['empty.txt', 'rcj_instructions.txt', 'default.txt']
+    
     for prt_file in FilesInPath:                #iterate over file objects found
-
-        if prt_file[-3:] == 'txt' and prt_file[:3] != 'rcj' and prt_file[:3] != 'ali':         
+        #print (prt_file)
+        if prt_file in files_to_ignore:
+            print ("Skipping", prt_file)
+            continue
+        
+        if prt_file[-3:] == 'txt' and prt_file[:3] != 'rcj' and prt_file[:3] != 'ali':
         #check for txt suffix, ignore others and aligator- or rcj-associated
 
             output_directory, saved_files, sim_success = run_rcj(prt_file, ip_set, op_set, jump_paras, Data_Root)
@@ -204,7 +210,9 @@ def rcj_batch (ip_set, jump_paras, op_set):
                 os.chdir(output_directory)
                 column_prefices = ['jump','popen']
                 rcj_IO.rcj_merge(saved_files,column_prefices)
-
+        
+        
+        
         elif os.path.isdir(prt_file):          #ignore directories!
             print('Ignoring direcory: %s' %prt_file)
 
