@@ -21,6 +21,11 @@ def interpret_line(mech_line, commands, prog='Unknown'):
     #remove first element of line, splitting at spaces
     #print "%r"%mech_line   RAW string for debugging
     l = mech_line.split()
+    
+    if l == []:
+        print ("blank line")
+        return None, None, None
+    
     short = mech_line.strip()
     first_element = l.pop(0)
     #print ("first element:", first_element)
