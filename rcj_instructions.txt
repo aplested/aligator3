@@ -27,7 +27,7 @@ Error_jump
 rcj script Work flow
 ---------------- 
 
-a) finds HJCFIT_WIN printout files with suffix .txt in a directory selected by the user
+a) finds HJCFIT_WIN printout files with suffix .txt in a directory selected by the user (the default is the "tests" directory)
 
 For each printout file found, 
 
