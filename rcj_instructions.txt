@@ -1,7 +1,7 @@
 RCJ - Calculation of relaxations in response to Realistic Concentration Jumps
-Version 0.1
+Version 0.3 - 2026
 
-needs python 2.7 and numpy to run
+updated for Python 3 . Some scripts need Numpy 
 
 rcj is the main() module
 Parameters can be set in the dictionaries found within this script
