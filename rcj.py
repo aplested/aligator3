@@ -22,8 +22,8 @@ if __name__ == "__main__":
     ### Here one can set input directory and so on
 
     input_settings = {
-    'directory'     : '//users/andrew/desktop/rcj',          #put rcj_input in the home directory
-    'single_files'  : True  ,                 #simulate from individual rate files
+    'directory'     : 'tests',           # demo input file in tests directory
+    'single_files'  : True  ,            # simulate from individual rate files
     'MR'            : 'Automatic'
     }
     # 'MR' setting is passed to jump_parameters eventually - should be in there to begin with??

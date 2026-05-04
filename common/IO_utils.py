@@ -29,7 +29,7 @@ def prt_to_rates(filename, output_dir):
     else:
         previously_converted = False
      
-    #2026 : Fails with an HJCFIT printout that doesn't obey utf-8 without latin-1 encoding 
+    #2026 : Fails with an HJCFIT printout that doesn't obey utf-8 (without latin-1 encoding option)
     f = open(filename, 'r', encoding='latin-1')
     #For each file, grab whole thing as a string
     s=f.read()
@@ -106,9 +106,13 @@ def get_file_list(dir):
             --  Files_In_Dir : a list of the same
     '''
     current = os.getcwd()
-    os.chdir(dir)   #move to directory of interest (takes care of .. etc)
-    dir = os.getcwd()
-    os.chdir(current)   #go back
+    
+    #print ("current:", current, "dir:", dir)
+    
+    if dir != current:
+        os.chdir(dir)   #move to directory of interest (takes care of .. etc)
+        dir = os.getcwd()
+        os.chdir(current)   #go back
 
     Files_In_Dir = os.listdir(dir)
 
@@ -149,7 +153,7 @@ def ask_ok(prompt, retries=2, default=True, complaint='Yes or no, please!'):
         if retries < 0:
             raise IOError('refusenik user')
 
-def getpath(fixed=True, work_dir='/Users/Andrew'):
+def getpath(fixed=True, work_dir='tests'):
     '''
     Gets a valid path at the user's behest
     Argument -- fixed   : the default. When True, work_dir is used as the path
@@ -161,7 +165,7 @@ def getpath(fixed=True, work_dir='/Users/Andrew'):
         print ("Unfortunately the suggested working directory doesn't exist, using current directory instead.\n")
         work_dir = os.getcwd()
 
-    os.chdir(work_dir)
+    #os.chdir(work_dir)
     screen_out,FilesInDirectory = get_file_list(work_dir)
 
     if fixed:
@@ -207,6 +211,7 @@ def make_folder(new_dir, target):
             shutil.rmtree(new_dir)
             os.mkdir(new_dir)
             os.chdir(new_dir)
+            os.chdir("..")                              #why finish in the directory?
             directory_established = True
             
         else:
@@ -216,7 +221,10 @@ def make_folder(new_dir, target):
         os.chdir(target)
         os.mkdir(new_dir)
         os.chdir(new_dir)
+        os.chdir("..")                                  #why finish in the directory?
         directory_established = True
+    
+    #print ("CWD at end of Make-folder", os.getcwd())
     
     return directory_established
 
