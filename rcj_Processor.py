@@ -251,12 +251,10 @@ def rcj_batch (ip_set, jump_paras, op_set):
             else:
                 print('output merged during run\n')
         
-        
-
+    
         #send table with header to file
-        #print ("CWD before Data Root:", os.getcwd())
-        
         # this table is annoying unless you rename/delete
+        
         # rcj_IO.write_table(rf_times_by_file,'file\trise (mus)\tfall (mus)\n', os.getcwd())
 
         #for now, just print

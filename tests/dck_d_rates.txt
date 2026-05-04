@@ -1,0 +1,14 @@
+# Rname	from 	to	C-dep?	Rate
+
+beta	1	0	x	5000
+alpha	0	1	x	1000
+d_plus	1	2	x	500
+d_minus	2	1	x	10
+k_plus	3	1	c	3.00E+06
+k_minus	1	3	x	10000
+        
+# 3 - 1 - 0
+#     |   
+#     2 
+
+# N_open_states = 1
