@@ -170,7 +170,7 @@ def rcj_calc_nump (jux, mech_rates, paras, P=[]):
     jux         : concentration jump profile array
     mech_rates  : dictionary of rate name - constant pairs
     paras       : dictionary of parameters that defines pulse
-    P           : optionally pass current occupancy (for chains of pulses)
+    P           : optionally pass current occupancy as an np.array (for chains of pulses)
     returns - relaxation and jump
     '''
     ###Not using MR_needed to avoid many recalculations
@@ -221,7 +221,7 @@ def rcj_calc_nump (jux, mech_rates, paras, P=[]):
             #store Q, eigenvalues of Q, and A matrices for future use (called a hint in Python)
             Q_library[c] = Qc_w
 
-        if P != []:
+        if len(P) != 0:
             #Not the first step or no blank input so use P from last step to calculate new occupancy
 
             #creates Q.w[:,:], nth row of which is p * A_sub_n

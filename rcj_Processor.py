@@ -6,7 +6,7 @@ __date__ ="$Jan 11, 2011 12:01:30 PM$"
 ##          and input and output option dictionaries
 
 ## 21/06/11 Removed executable hook and main module to rcj.py
-## 2026-05-04 Tidied up file handling 
+## 2026-05-04 Tidied up file handling
 
 import os.path
 import os
@@ -131,17 +131,17 @@ def multi_rcj_setup(Parameters, MR_option, op_fo, input_filename = 'ke08ceko2b.t
 
             if verbose: print('Calculating %s microsec jump with %s microsec rise for %s...' %(pwidth,rise,input_filename))
 
-            P_copy = Parameters.copy()
-            P_copy['rise_time'] = rise      #send parameters dict with single rise time
-            P_copy['pulse_width'] = pwidth  #send parameters dict with single pulse width
+            Pa_copy = Parameters.copy()
+            Pa_copy['rise_time'] = rise      #send parameters dict with single rise time
+            Pa_copy['pulse_width'] = pwidth  #send parameters dict with single pulse width
             
-            P_copy['MR_option'] = MR_option
+            Pa_copy['MR_option'] = MR_option
             
             if MR_option == 'Automatic':
-                P_copy['MR_avoid'] = MR_ex
-                P_copy['MR_use'] = MR_in
+                Pa_copy['MR_avoid'] = MR_ex
+                Pa_copy['MR_use'] = MR_in
             
-            jump, relax = rcj_single(rates, P_copy)
+            jump, relax = rcj_single(rates, Pa_copy)
 
             jump_data_out = rcj_lib.compose_rcj_out(jump, relax, open_states,op_fo['jump_y_offset'],op_fo['Occupancies'],op_fo['P-open'])
 
