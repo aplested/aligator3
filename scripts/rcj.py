@@ -3,23 +3,23 @@
 __author__="Andrew"
 __date__ ="$Jun 21, 2011 2:53:11 PM$"
 
-#import .rcj_Processor as r
+# Revised 2026-05-04 for Synaptic Biophyics course
 
 if __name__ == "__main__":
-## from https://stackoverflow.com/questions/11536764
+    ## from https://stackoverflow.com/questions/11536764
     if __package__ is None:
         import sys
         from os import path
         sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
         import rcj_Processor as r
+    
     else:
         import rcj_Processor as r
     
-
     print("RCJ - Calculation of relaxations in response to Realistic Concentration Jumps")
-    print("Version 0.2 - Python3 conversion")
+    print("Version 0.3 - Python3 conversion")
 
-    ### set input directory and so on
+    ### Here one cam set input directory and so on
 
     input_settings = {
     'directory'     : '//users/andrew/desktop/rcj',          #put rcj_input in the home directory
@@ -33,21 +33,21 @@ if __name__ == "__main__":
     jump_parameters = {
     'step_size'     : 8 ,           #the sampling step. All time params are in microseconds
     'pulse_rise'    : 2000 ,        #how far into the record should the jump occur
-    'rise_time'     : [200] , # list of 10-90% rise times for error functions ;each jump made in turn
-    'pulse_width'   : [2500] , # list of pulse widths, each made in turn
+    'rise_time'     : [200] ,       # list of 10-90% rise times for error functions ;each jump made in turn
+    'pulse_width'   : [2500] ,      # list of pulse widths, each made in turn
     'record_length' : 60000,
-    'peak_conc'     : 2e-3,          #in molar
+    'peak_conc'     : 2e-3,         # in molar
     'shape'         : 'rcj'
     }
 
     ### Here one can control the output format and order
 
     output_format = {
-    'jump_y_offset' : 1.2,         #the display offset for the jump (Adds 1.2 to all values in jump [Molar])
-    'Occupancies'   : True,        #Output of state occupancies - parallel output merge fails if True
-    'P-open'        : True,        #Output of Open probability
-    'merge_parallel': False,        #Merge output files after each set of sims, rather than for all sims at the end
-    'get_rise_fall' : True         #Use threshold algorithm to find 10-90% rise and fall times
+    'jump_y_offset' : 1.2,         # The display offset for the jump (Adds 1.2 to all values on [Molar] scale)
+    'Occupancies'   : True,        # Output of state occupancies - parallel output merge fails if True
+    'P-open'        : True,        # Output of Open probability
+    'merge_parallel': False,       # Merge output files after each set rather than for all sims at the end
+    'get_rise_fall' : True         # Use threshold algorithm to find 10-90% rise and fall times
     }
 
     for key in jump_parameters:
