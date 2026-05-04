@@ -6,6 +6,7 @@ __date__ ="$Jan 11, 2011 12:01:30 PM$"
 ##          and input and output option dictionaries
 
 ## 21/06/11 Removed executable hook and main module to rcj.py
+## 2026-05-04 Tidied up file handling 
 
 import os.path
 import os
@@ -249,7 +250,7 @@ def rcj_batch (ip_set, jump_paras, op_set):
         
 
         #send table with header to file
-        print ("CWD before Data Root:", os.getcwd())
+        #print ("CWD before Data Root:", os.getcwd())
         
         rcj_IO.write_table(rf_times_by_file,'file\trise (mus)\tfall (mus)\n', os.getcwd())
 
