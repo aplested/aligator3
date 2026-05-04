@@ -1,4 +1,5 @@
-Python 3 revision Aligator, including a bug fix for the microscopic reversibility code
+Python 3 revision of Aligator, including a bug fix for the microscopic reversibility code
+2026-05-04
 
 ```
 python3 aligator.py
