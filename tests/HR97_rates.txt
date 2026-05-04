@@ -1,0 +1,26 @@
+# Rname	from 	to	C-dep?	Rate
+
+kc0c1	2	3	c	1.30E+07
+kc1c0	3	2	x	2093
+kc1c2	3	4	c	6.00E+06
+kc2c1	4	3	x	4719
+kc2o	4	1	x	1.72E+04
+koc2	1	4	x	3734
+koc7	1	9	x	1.14E+02
+kc7o	9	1	x	90
+kc3c4	5	6	c	6.00E+06
+kc4c3	6	5	x	3486
+kc4c5	6	7	x	4.76E+02
+kc5c4	7	6	x	420
+kc5c6	7	8	x	1.00E+04
+kc6c5	8	7	x	636
+kc1c3	3	5	x	4.22E+02
+kc3c1	5	3	x	31
+kc2c4	4	6	x	855
+kc4c2	6	4	x	47
+koc5	1	7	x	3
+kc5o	7	1	x	0.7
+kc7c6	9	8	x	18.8
+kc6c7	8	9	x	0.3
+
+# N_open_states = 1
