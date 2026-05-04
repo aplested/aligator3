@@ -50,6 +50,8 @@ if __name__ == "__main__":
     'get_rise_fall' : True         # Use threshold algorithm to find 10-90% rise and fall times
     }
 
+    print("The following parameters will be used")
+    
     for key in jump_parameters:
         print(key, jump_parameters[key])
 
