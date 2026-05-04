@@ -19,13 +19,26 @@ def prt_to_rates(filename, output_dir):
     Arguments :
                 -- filename         : the path of the file
                 -- output_dir       : where to save the new rate file
-    Returns     :
+    Returns   :
                 -- dcmech           : name of the new rate file
                 -- open_state_count : the number of open states
     '''
     print(('Using ' + str(filename)))
+    
     if filename[-9:] == "rates.txt":
-        previously_converted = True
+        prog = 'RCJ'
+        open_hook = "N OpenStates = "
+        
+        N_open_states = 1       #default, state 0 is open
+        
+        with open(filename, 'r') as inF:
+            for line in inF:
+                if open_hook in line:
+                    N_open_states = int(line.split(open)[1])
+                    print (open_hook, N_open_states, " from file.")
+                    
+        return filename, N_open_states, prog
+        
     else:
         previously_converted = False
      
@@ -47,24 +60,21 @@ def prt_to_rates(filename, output_dir):
     
     #print (prog)
     chopped,open_state_count = Q_input.chop_HJC_prt(s, prog)
-
-    if previously_converted:
-        return filename,open_state_count            #o_s_c not going to work automatically, manual input during chop
-
+        
     #save to suffix _rates.txt
     base_fname = os.path.basename(filename)
     dc_mech = base_fname[:-4] + '_rates.txt'
 
     print('writing rates to: ', dc_mech)
 
-    cwd = os.getcwd()
-    os.chdir(output_dir)
-    g = open(dc_mech, 'w')
+    #cwd = os.getcwd()
+    #os.chdir(output_dir)
+    g = open(os.path.join(output_dir, dc_mech), 'w')
 
     g.write(chopped)
 
     g.close
-    os.chdir(cwd)
+    #os.chdir(cwd)
     return dc_mech, open_state_count, prog
 
 def read_rate_file (filename):

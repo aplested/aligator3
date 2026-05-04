@@ -51,8 +51,10 @@ def run_rcj(prt_file, input_opts, output_opts, jump_parameters, Root_dir):
     print('Running RCJ on %s' %prt_file)
 
     sim_dir_name = prt_file[:-4]+'_sim'      # -4 to remove .txt suffix
-    rcj_IO.make_folder(sim_dir_name,Root_dir)
+    rcj_IO.make_folder(sim_dir_name, Root_dir)
                                                         # make folder returns output directory
+    
+    
     print ("CWD:", os.getcwd())
     #input_file = os.path.join(Root_dir,prt_file)   # AP 2026 no need to do this?
     input_file = prt_file
@@ -60,12 +62,14 @@ def run_rcj(prt_file, input_opts, output_opts, jump_parameters, Root_dir):
     #out_dir = os.path.join(Root_dir,sim_dir_name) # AP 2026 no need to do this?
     out_dir  = sim_dir_name
     
+    #move original prt into new dir
+    shutil.copy2(input_file, os.path.join(out_dir, prt_file))
+    
     MR_option = input_opts['MR']
     #try
     saved_file_list = multi_rcj_setup( jump_parameters, MR_option, output_opts, input_file, out_dir,True,False )   #verbose and no user intervention
 
-    #move original prt into new dir
-    shutil.copy2(input_file,os.path.join(out_dir,prt_file))
+    
     success = True
     #os.remove(input_file)          # leave input file in place for re-run if required
 
@@ -252,6 +256,10 @@ def rcj_batch (ip_set, jump_paras, op_set):
         #send table with header to file
         #print ("CWD before Data Root:", os.getcwd())
         
-        rcj_IO.write_table(rf_times_by_file,'file\trise (mus)\tfall (mus)\n', os.getcwd())
+        # this table is annoying unless you rename/delete
+        # rcj_IO.write_table(rf_times_by_file,'file\trise (mus)\tfall (mus)\n', os.getcwd())
 
+        #for now, just print
+        print ("file\trise (mus)\tfall (mus)\n")
+        print (rf_times_by_file)
             

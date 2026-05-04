@@ -304,16 +304,16 @@ def compose_rcj_out (cjump,relax_dict,o_states,offset=1.2,output_Occup=False,out
 
     return lines
 
-def pulse_instexp(t, xxx_todo_changeme):
+def pulse_instexp(t, prepulse=100, cmax=0.001, tdec=1.2, cb=0):
     """
     From Remis Lape 2011
-    t is the time array
-    prepulse -- interval before the pulse
+    t is the time array, in ms
+    prepulse -- interval before the pulse in ms
     cmax    -- max concentration in molar
-    tdec    -- decay time
+    tdec    -- decay time in ms
     cb- background concentration in molar
     """
-    (prepulse, cmax, tdec, cb) = xxx_todo_changeme
+    #(prepulse, cmax, tdec, cb) = xxx_todo_changeme
     if type(t) == type(numpy.array(())):
         print('array')
         t1 = numpy.extract(t[:] < prepulse, t)

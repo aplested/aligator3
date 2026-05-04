@@ -23,12 +23,14 @@ def interpret_line(mech_line, commands, prog='Unknown'):
     l = mech_line.split()
     short = mech_line.strip()
     first_element = l.pop(0)
+    #print ("first element:", first_element)
 
     if prog == 'Unknown':
         try:
             #in meaningful lines, the DC format has an integer number for the rate as the first element
             dc_rate_num = int(first_element)
             format = 'DCProgs_prt'
+            print ("DCP")
         except:
             format = 'RCJ Native'
             
@@ -52,15 +54,27 @@ def interpret_line(mech_line, commands, prog='Unknown'):
         # return a null-'remove command' to act as pass
 
     elif format == 'RCJ Native':
-
+        
+        if first_element[0:] == "#":
+            print ("Discarded comment/header: ", mech_line)
+            return  '*rm', None, None     # it's a comment, return a null remove (blank)
+        
         rate_name = first_element
-        s = []
-        y = []
-        for elem in l:
-            s.append(elem)
-        x = tuple(s[:1])
-        for e in s[2:]:
-            y.append(float(e)) 
+        
+        if l[2] == "c":
+            mux_conc = 1     # association rate, will be multiplied by concentration
+        else:
+            mux_conc = 0
+        
+        from_state = int(l[0]) - 1            # zero based numbering
+        to_state = int(l[1]) - 1              # zero based numbering
+        rate_constant = float(l[3])
+        
+        x = (from_state, to_state)
+        y = [rate_constant, mux_conc]
+        
+        #print (x)
+        #print (y)
 
     elif format == 'DOS_DCProgs_prt':
         #DOS format isn't the same as the windows Beta
