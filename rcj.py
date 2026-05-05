@@ -24,26 +24,27 @@ if __name__ == "__main__":
     input_settings = {
     'directory'     : 'tests',           # demo input file in tests directory
     'single_files'  : True  ,            # simulate from individual rate files
-    'MR'            : 'Automatic'
+    'MR'            : 'Automatic'        # approach for handling Microscopic Reversibility
     }
     # 'MR' setting is passed to jump_parameters eventually - should be in there to begin with??
     
     ### Here one can set the parameters of the jump
+    ### All time parameters are in microseconds
 
     jump_parameters = {
-    'step_size'     : 8 ,           #the sampling step. All time params are in microseconds
+    'step_size'     : 8 ,           #the sampling step.
     'pulse_rise'    : 2000 ,        #how far into the record should the jump occur
     'rise_time'     : [200] ,       # list of 10-90% rise times for error functions ;each jump made in turn
-    'pulse_width'   : [2500] ,      # list of pulse widths, each made in turn
+    'pulse_width'   : [1000] ,      # list of pulse widths, each made in turn
     'record_length' : 60000,
     'peak_conc'     : 2e-3,         # in molar
-    'shape'         : 'rcj'
+    'shape'         : 'rcj'         # can one write inst-Exp here? Does it work?
     }
 
     ### Here one can control the output format and order
 
     output_format = {
-    'jump_y_offset' : 1.2,         # The display offset for the jump (Adds 1.2 to all values on [Molar] scale)
+    'jump_y_offset' : .5,         # The display offset for the jump (Adds 1.2 to all values on [Molar] scale)
     'Occupancies'   : True,        # Output of state occupancies - parallel output merge fails if True
     'P-open'        : True,        # Output of Open probability
     'merge_parallel': False,       # Merge output files after each set rather than for all sims at the end
