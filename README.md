@@ -26,3 +26,5 @@ _rcjm.txt files are used for input to specify the receptor mechanism and will be
 Further examples of input files (one other rcjm and one HJCFIT .prt file) are provided in the input_files directory
 
 Alter values in rcj.py script to change parameters.
+
+See file rcj_instructions.txt for more details.
