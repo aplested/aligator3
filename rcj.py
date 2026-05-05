@@ -34,7 +34,7 @@ if __name__ == "__main__":
     jump_parameters = {
     'step_size'     : 8 ,           #the sampling step.
     'pulse_rise'    : 2000 ,        #how far into the record should the jump occur
-    'rise_time'     : [200] ,       # list of 10-90% rise times for error functions ;each jump made in turn
+    'rise_time'     : [200, 500] ,       # list of 10-90% rise times for error functions ;each jump made in turn
     'pulse_width'   : [1000] ,      # list of pulse widths, each made in turn
     'record_length' : 60000,
     'peak_conc'     : 2e-3,         # in molar

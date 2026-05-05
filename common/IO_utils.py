@@ -25,8 +25,9 @@ def prt_to_rates(filename, output_dir):
     '''
     print(('Using ' + str(filename)))
     
-    if filename[-9:] == "rates.txt":
-        prog = 'RCJ'
+    if filename[-4:] == ".txt" and "rcjm" in filename:
+        print ("Detected RCJ mechanism file")
+        prog = 'RCJ'    #rcjm stands for RCJ mechanism
         open_hook = "N OpenStates = "
         
         N_open_states = 1       #default, state 0 is open
@@ -136,7 +137,7 @@ def get_file_list(dir):
     
     return report,Files_In_Dir
 
-def ask_ok(prompt, retries=2, default=True, complaint='Yes or no, please!'):
+def ask_ok(prompt, retries=2, default=True, complaint='Yes or No, please!'):
     '''
     Generic yes/no question asking function
     Arguments :
@@ -156,8 +157,8 @@ def ask_ok(prompt, retries=2, default=True, complaint='Yes or no, please!'):
             promptdefault = 'N'
         ok = input(prompt + '[' + promptdefault + '] ?')
         if ok in (''): return default
-        if ok in ('','y', 'ye', 'yes'): return True
-        if ok in ('n', 'no', 'nn', 'nope'): return False
+        if ok in ('Y', 'y', 'ye', 'yes'): return True
+        if ok in ('N', 'n', 'no', 'nn', 'nope'): return False
         retries = retries - 1
         print(complaint)
         if retries < 0:
@@ -214,24 +215,30 @@ def make_folder(new_dir, target):
     '''
     
     directory_established = False
+    print ("target", target)
+    print ("Cwd", os.getcwd())
     
-    if os.path.isdir(os.path.join(target,new_dir)):
-        if ask_ok('Overwrite old simulation %s in directory %s' %(new_dir,target), 2, True):
-            os.chdir(target)
-            shutil.rmtree(new_dir)
-            os.mkdir(new_dir)
-            os.chdir(new_dir)
-            os.chdir("..")                              #why finish in the directory?
+    dir_to_create = os.path.join(target, new_dir)
+    
+    if os.path.isdir(dir_to_create):
+        if ask_ok('Overwrite old simulation {0} in directory {1}'.format(new_dir,target), 2, True):
+            #os.chdir(target)
+            shutil.rmtree(dir_to_create)
+            os.mkdir(dir_to_create)
+            #os.chdir(new_dir)
+            #os.chdir("..")                              #why finish in the directory?
             directory_established = True
             
         else:
             print("can't overwrite, so stopping")
             
     else:
-        os.chdir(target)
-        os.mkdir(new_dir)
-        os.chdir(new_dir)
-        os.chdir("..")                                  #why finish in the directory?
+        
+        #if not os.path.samefile(os.getcwd(), target):
+            #os.chdir(target)
+        os.mkdir(dir_to_create)
+        #os.chdir(new_dir)
+        #os.chdir("..")                                  #why finish in the directory?
         directory_established = True
     
     #print ("CWD at end of Make-folder", os.getcwd())
@@ -273,26 +280,28 @@ def family_write(fam, max_len):
         f.write('\n')
     f.close()
     
-def rcj_merge(files_to_merge,other_cols,one_time_col=True):
+def rcj_merge(merge_dir, other_cols, one_time_col=True):
     '''
     merge a list of concentration jump files
     columns from tab delimited text are appended into a big file
 
-    arguments   :   files_to_merge  - list of paths to files to merge
+    arguments   :   merge_dir       - path of directory of files to merge
                 :   other_cols      - a list of the column titles as strings
                 :   one_time_col    - time columns are all the same, keep only one
 
     returns     :   nothing
     '''
-
+    
+    files_to_merge = os.listdir(merge_dir)
     file_dict = {}
     suffices = ['xls','prt']
 
+    
     #gather open file objects in a dictionary
     for jump_file in files_to_merge:
         if os.path.isdir(jump_file) == False:
             if jump_file[-3:] in suffices:
-                f = open(jump_file,'r')
+                f = open(os.path.join(merge_dir, jump_file),'r')
                 file_dict[jump_file] = f
 
     #take the name of the first file
@@ -301,10 +310,10 @@ def rcj_merge(files_to_merge,other_cols,one_time_col=True):
     split_name = root_name.split('_')
 
     output_filename = split_name[0] + '_merged.xls'
-
+    
     header =[]
-    g = open(output_filename,'w')
-    print("Writing merged output to %s ..." %(output_filename))
+    g = open(os.path.join(merge_dir, output_filename), 'w')
+    print("Writing merged output to %s ..." %(os.path.join(merge_dir, output_filename)))
     
     for key in sorted(file_dict):
         stem = key.split(' ')
