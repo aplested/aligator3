@@ -1,0 +1,20 @@
+# Rname	from 	to	C-dep?	Rate
+
+kc0c1	5	4	c	1E+07
+kc1c2	4	2	c	0.5E+07
+kc2c1	2	4	x	10
+kc1c0	4	5	x	5
+k_o	2	1	x	30
+k_c	1	2	x	322
+k_d	2	3	x	4
+k_r	3	2	x	0.3
+
+# Rates for opening, closing and desensitization 
+# are discerned from Clements & Westbrook 1991
+
+# topology
+# c0 (5) - c1 (4) - c2 (2) - O (1)
+#                    |               
+#                   c5 (3) 
+
+# N_open_states = 1
